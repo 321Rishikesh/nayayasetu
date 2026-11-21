@@ -1,0 +1,48 @@
+@model List<Department>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Department Management";
+}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Departments</h6>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle small">
+                    <thead class="table-light"><tr><th>Code</th><th>Name</th><th>Head</th><th>Officers</th><th>Apps</th><th></th></tr></thead>
+                    <tbody>
+                    @foreach (var d in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@d.Code</td>
+                            <td>@d.Name</td>
+                            <td>@d.HeadOfDepartment</td>
+                            <td>@d.Officers.Count</td>
+                            <td>@d.Applications.Count</td>
+                            <td>
+                                <form asp-action="DeleteDepartment" method="post" onsubmit="return confirm('Delete this department?');">
+                                    <input type="hidden" name="id" value="@d.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Add New Department</h6>
+            <form asp-action="CreateDepartment" method="post">
+                <div class="mb-2"><label class="form-label small fw-semibold">Name</label><input type="text" name="name" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small fw-semibold">Code</label><input type="text" name="code" class="form-control form-control-sm" required placeholder="e.g., ADR" /></div>
+                <div class="mb-2"><label class="form-label small fw-semibold">Head of Department</label><input type="text" name="headOfDepartment" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small fw-semibold">Contact Email</label><input type="email" name="contactEmail" class="form-control form-control-sm" /></div>
+                <div class="mb-3"><label class="form-label small fw-semibold">Description</label><textarea name="description" rows="3" class="form-control form-control-sm"></textarea></div>
+                <button type="submit" class="btn btn-primary btn-sm w-100">Create Department</button>
+            </form>
+        </div>
+    </div>
+</div>

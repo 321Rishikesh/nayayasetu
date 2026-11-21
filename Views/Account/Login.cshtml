@@ -1,0 +1,49 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h3 class="fw-bold text-navy mb-1">Sign in to NyayaSetu</h3>
+                <p class="small text-muted mb-4">Access your role-specific dashboard securely.</p>
+
+                <form asp-action="Login" method="post">
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold"></label>
+                        <input asp-for="Email" class="form-control" autocomplete="username" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold"></label>
+                        <input asp-for="Password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="form-check">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label small"></label>
+                        </div>
+                        <a asp-action="ForgotPassword" class="small">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Sign In</button>
+                </form>
+
+                <hr class="my-4" />
+                <div class="small text-muted">
+                    <strong>Demo Prototype Accounts:</strong>
+                    <ul class="mb-2 mt-1 ps-3">
+                        <li>Citizen: <code>citizen@nyayasetu.local</code> / <code>Citizen@123</code></li>
+                        <li>Dept Officer: <code>officer@nyayasetu.local</code> / <code>Officer@123</code></li>
+                        <li>Legal Aid Officer: <code>legalaid@nyayasetu.local</code> / <code>LegalAid@123</code></li>
+                        <li>Super Admin: <code>admin@nyayasetu.local</code> / <code>Admin@123</code></li>
+                    </ul>
+                    New citizen? <a asp-action="Register" class="fw-semibold">Create an account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

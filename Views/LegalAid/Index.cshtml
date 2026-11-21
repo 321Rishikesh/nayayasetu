@@ -1,0 +1,74 @@
+@model List<LegalAidRequest>
+@{
+    Layout = "_CitizenLayout";
+    ViewData["Title"] = "Free Legal Aid & Consultations";
+    var appts = ViewBag.Appointments as List<Appointment> ?? new List<Appointment>();
+}
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-navy mb-0">My Legal Aid Applications</h5>
+                <a asp-action="Create" class="btn btn-primary btn-sm">New Legal Aid Request</a>
+            </div>
+            @if (!Model.Any())
+            {
+                <p class="small text-muted">No legal aid requests submitted yet.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-light"><tr><th>Ref #</th><th>Case Type</th><th>Eligible</th><th>Status</th><th></th></tr></thead>
+                        <tbody>
+                        @foreach (var r in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@r.ReferenceNumber</td>
+                                <td>@r.CaseType</td>
+                                <td><span class="badge @(r.IsEligible ? "bg-success" : "bg-secondary")">@(r.IsEligible ? "Yes" : "Review")</span></td>
+                                <td><span class="badge bg-info text-dark">@r.Status</span></td>
+                                <td><a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-primary">Details</a></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+            <h6 class="fw-bold text-navy mb-3">Book Legal Consultation Appointment</h6>
+            <form asp-action="BookAppointment" method="post">
+                <div class="mb-2">
+                    <label class="form-label small fw-semibold">Subject</label>
+                    <input type="text" name="Subject" class="form-control form-control-sm" required placeholder="e.g., Consumer dispute consultation" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small fw-semibold">Preferred Date &amp; Time</label>
+                    <input type="datetime-local" name="ScheduledDateTime" class="form-control form-control-sm" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Mode</label>
+                    <select name="Mode" class="form-select form-select-sm">
+                        <option>Video Call</option>
+                        <option>In-Person</option>
+                        <option>Phone</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-saffron btn-sm w-100 fw-semibold">Request Consultation</button>
+            </form>
+        </div>
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-2">My Appointments</h6>
+            @foreach (var a in appts)
+            {
+                <div class="border rounded-3 p-2 mb-2 small">
+                    <div class="d-flex justify-content-between"><strong>@a.Subject</strong><span class="badge bg-primary">@a.Status</span></div>
+                    <div class="text-muted">@a.ScheduledDateTime.ToString("dd MMM yyyy HH:mm") &bull; @a.Mode</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

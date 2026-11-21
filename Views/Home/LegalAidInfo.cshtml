@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Legal Aid Information";
+}
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h2 class="fw-bold text-navy mb-3">Free Legal Aid Information</h2>
+                <p>Under Section 12 of the <strong>Legal Services Authorities Act, 1987</strong>, eligible citizens in India are entitled to free legal services including representation, legal advice, and mediation through Legal Services Authorities.</p>
+                <h5 class="fw-semibold mt-4">Key Eligibility Categories</h5>
+                <ul>
+                    <li>Women and children</li>
+                    <li>Members of Scheduled Castes or Scheduled Tribes</li>
+                    <li>Persons with disabilities</li>
+                    <li>Industrial workmen and victims of mass disaster or violence</li>
+                    <li>Persons in custody</li>
+                    <li>Citizens whose annual income is below the prescribed state limit</li>
+                </ul>
+                <div class="mt-4">
+                    <a asp-controller="LegalAid" asp-action="Create" class="btn btn-primary">Apply for Legal Aid (Prototype)</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h5 class="fw-bold text-navy mb-3">Verified Official Portals</h5>
+                <div class="list-group list-group-flush">
+                    <a href="https://nalsa.gov.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">NALSA Official Website <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
+                    <a href="https://nalsa.gov.in/legal-aid/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">NALSA Legal Aid Guide <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
+                    <a href="https://nalsa.gov.in/lok-adalats/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">NALSA Lok Adalats <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
+                    <a href="https://punjab.nalsa.gov.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">Punjab State Legal Services Authority <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
+                    <a href="https://www.tele-law.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">Tele-Law Portal (DoJ) <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

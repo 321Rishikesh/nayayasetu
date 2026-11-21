@@ -1,0 +1,49 @@
+@model AdminUsersViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "User & Officer Management";
+}
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle small">
+            <thead class="table-light"><tr><th>Name</th><th>Email</th><th>Current Role</th><th>Department</th><th>Status</th><th>Update Role / Status</th></tr></thead>
+            <tbody>
+            @foreach (var item in Model.Users)
+            {
+                <tr>
+                    <td class="fw-semibold">@item.User.FullName</td>
+                    <td>@item.User.Email</td>
+                    <td><span class="badge bg-primary">@item.Role</span></td>
+                    <td>@(item.DepartmentName ?? "—")</td>
+                    <td><span class="badge @(item.User.IsActive ? "bg-success" : "bg-secondary")">@(item.User.IsActive ? "Active" : "Inactive")</span></td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-1">
+                            <form asp-action="UpdateUserRole" method="post" class="d-flex gap-1">
+                                <input type="hidden" name="userId" value="@item.User.Id" />
+                                <select name="role" class="form-select form-select-sm">
+                                    @foreach (var r in AppRoles.All)
+                                    {
+                                        <option value="@r" selected="@(item.Role == r)">@r</option>
+                                    }
+                                </select>
+                                <select name="departmentId" class="form-select form-select-sm">
+                                    <option value="">Dept (Officers)</option>
+                                    @foreach (var d in Model.Departments)
+                                    {
+                                        <option value="@d.Id">@d.Code</option>
+                                    }
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                            </form>
+                            <form asp-action="ToggleUserStatus" method="post">
+                                <input type="hidden" name="userId" value="@item.User.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-warning">@(item.User.IsActive ? "Disable" : "Enable")</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+@model TrackApplicationViewModel
+@{
+    ViewData["Title"] = "Track Application";
+    var stages = new[]
+    {
+        ApplicationStatus.Submitted,
+        ApplicationStatus.UnderReview,
+        ApplicationStatus.Verified,
+        ApplicationStatus.Approved,
+        ApplicationStatus.Resolved
+    };
+}
+<div class="container py-5">
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+        <h2 class="fw-bold text-navy mb-2"><i class="fa-solid fa-magnifying-glass-location text-saffron me-2"></i>Track Your Application</h2>
+        <p class="text-muted small mb-3">Enter your unique NyayaSetu tracking ID (e.g., <code>NYS-2026-1001</code>) to check live status and officer remarks.</p>
+        <form method="get" class="row g-2">
+            <div class="col-md-9">
+                <input type="text" name="trackingId" value="@Model.TrackingId" class="form-control form-control-lg" placeholder="Enter Tracking ID (e.g., NYS-2026-1001)" required />
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary btn-lg w-100">Track Status</button>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Searched && Model.Application == null)
+    {
+        <div class="alert alert-warning rounded-4 shadow-sm">
+            <i class="fa-solid fa-circle-exclamation me-2"></i>No application found for Tracking ID <strong>@Model.TrackingId</strong>. Please verify the ID and try again.
+        </div>
+    }
+    else if (Model.Application != null)
+    {
+        var app = Model.Application;
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                    <span class="badge bg-primary mb-2">@app.TrackingId</span>
+                    <h4 class="fw-bold text-navy mb-1">@app.Title</h4>
+                    <div class="small text-muted">
+                        Department: <strong>@app.Department?.Name</strong> | Category: <strong>@app.Category?.Name</strong> | Submitted: <strong>@app.SubmissionDate.ToString("dd MMM yyyy")</strong>
+                    </div>
+                </div>
+                <span class="badge fs-6 px-3 py-2 bg-info text-dark">@app.Status</span>
+            </div>
+
+            <!-- Visual Progress Bar -->
+            <div class="row g-2 text-center mb-4">
+                @foreach (var st in stages)
+                {
+                    var reached = app.Status != ApplicationStatus.Rejected && ((int)app.Status >= (int)st);
+                    <div class="col">
+                        <div class="p-2 rounded-3 border @(reached ? "bg-primary text-white border-primary" : "bg-light text-muted")">
+                            <i class="fa-solid @(reached ? "fa-circle-check" : "fa-circle") me-1"></i>
+                            <div class="small fw-semibold">@st</div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(app.OfficerRemarks))
+            {
+                <div class="alert alert-light border-start border-4 border-primary mb-4">
+                    <div class="small text-uppercase text-muted fw-bold">Latest Officer Remarks</div>
+                    <div>@app.OfficerRemarks</div>
+                </div>
+            }
+
+            <h5 class="fw-bold text-navy mb-3">Progress Timeline</h5>
+            <div class="timeline-list">
+                @foreach (var h in app.History)
+                {
+                    <div class="timeline-item pb-3 ps-3 border-start border-2 border-primary">
+                        <div class="d-flex justify-content-between">
+                            <strong>@h.Status</strong>
+                            <small class="text-muted">@h.ChangedAt.ToString("dd MMM yyyy, HH:mm") UTC</small>
+                        </div>
+                        <p class="small text-muted mb-0">@h.Remarks</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

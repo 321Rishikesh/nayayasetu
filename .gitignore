@@ -1,0 +1,8 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+App_Data/SecureDocuments/
+appsettings.Local.json

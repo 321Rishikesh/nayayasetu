@@ -1,0 +1,39 @@
+@model List<Announcement>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "System Announcements";
+}
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Published Announcements</h6>
+            @foreach (var a in Model)
+            {
+                <div class="border rounded-3 p-3 mb-2 small">
+                    <div class="d-flex justify-content-between">
+                        <strong>@a.Title</strong>
+                        <form asp-action="DeleteAnnouncement" method="post">
+                            <input type="hidden" name="id" value="@a.Id" />
+                            <button type="submit" class="btn btn-sm btn-link text-danger p-0">Delete</button>
+                        </form>
+                    </div>
+                    <div class="text-muted">@a.Summary</div>
+                    <small class="text-secondary">@a.Category &bull; @a.PublishedAt.ToString("dd MMM yyyy")</small>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Publish New Announcement</h6>
+            <form asp-action="CreateAnnouncement" method="post">
+                <div class="mb-2"><label class="form-label small fw-semibold">Title</label><input type="text" name="title" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small fw-semibold">Category</label><input type="text" name="category" class="form-control form-control-sm" value="General" /></div>
+                <div class="mb-2"><label class="form-label small fw-semibold">Summary</label><input type="text" name="summary" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small fw-semibold">Full Content</label><textarea name="content" rows="4" class="form-control form-control-sm" required></textarea></div>
+                <div class="form-check mb-3"><input type="checkbox" name="isPinned" value="true" class="form-check-input" id="pinCheck" /><label class="form-check-label small" for="pinCheck">Pin to top</label></div>
+                <button type="submit" class="btn btn-primary btn-sm w-100">Publish</button>
+            </form>
+        </div>
+    </div>
+</div>

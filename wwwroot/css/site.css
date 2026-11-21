@@ -1,0 +1,171 @@
+:root {
+    --nyaya-navy: #12345A;
+    --nyaya-blue: #246B9E;
+    --nyaya-saffron: #F3A847;
+    --nyaya-bg: #F5F7FA;
+    --nyaya-surface: #FFFFFF;
+    --nyaya-text: #1E293B;
+    --nyaya-muted: #64748B;
+    --nyaya-border: #E2E8F0;
+}
+
+[data-theme="dark"] {
+    --nyaya-bg: #0F172A;
+    --nyaya-surface: #1E293B;
+    --nyaya-text: #F1F5F9;
+    --nyaya-muted: #94A3B8;
+    --nyaya-border: #334155;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--nyaya-bg);
+    color: var(--nyaya-text);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+.text-navy { color: var(--nyaya-navy) !important; }
+[data-theme="dark"] .text-navy { color: #93C5FD !important; }
+.bg-navy { background-color: var(--nyaya-navy) !important; }
+.text-saffron { color: var(--nyaya-saffron) !important; }
+.bg-saffron { background-color: var(--nyaya-saffron) !important; }
+
+.btn-primary {
+    background-color: var(--nyaya-blue);
+    border-color: var(--nyaya-blue);
+}
+.btn-primary:hover {
+    background-color: var(--nyaya-navy);
+    border-color: var(--nyaya-navy);
+}
+
+.btn-saffron {
+    background-color: var(--nyaya-saffron);
+    border-color: var(--nyaya-saffron);
+    color: #122133;
+}
+.btn-saffron:hover {
+    background-color: #E09330;
+    border-color: #E09330;
+    color: #122133;
+}
+
+.prototype-banner {
+    background-color: #0B223C;
+    color: #FFFFFF;
+    border-bottom: 2px solid var(--nyaya-saffron);
+}
+
+.navbar-nyaya {
+    background-color: var(--nyaya-navy);
+}
+.navbar-nyaya .nav-link {
+    color: rgba(255, 255, 255, 0.88);
+    font-weight: 500;
+    font-size: 0.92rem;
+}
+.navbar-nyaya .nav-link:hover,
+.navbar-nyaya .nav-link:focus {
+    color: var(--nyaya-saffron);
+}
+
+.hero-nyaya {
+    background: linear-gradient(135deg, var(--nyaya-navy) 0%, var(--nyaya-blue) 100%);
+}
+
+.footer-nyaya {
+    background-color: #0D2540;
+}
+.footer-link {
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+}
+.footer-link:hover {
+    color: var(--nyaya-saffron);
+}
+
+.card, .stat-card {
+    background-color: var(--nyaya-surface);
+    color: var(--nyaya-text);
+    border: 1px solid var(--nyaya-border);
+}
+
+.stat-card {
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(18, 52, 90, 0.06);
+}
+
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(18, 52, 90, 0.12) !important;
+}
+
+/* Dashboard Sidebar Layout */
+.sidebar-nyaya {
+    width: 256px;
+    min-width: 256px;
+    background: linear-gradient(180deg, var(--nyaya-navy) 0%, #0D2540 100%);
+}
+.sidebar-nyaya .nav-link {
+    border-radius: 0.6rem;
+    font-size: 0.9rem;
+    padding: 0.55rem 0.85rem;
+}
+.sidebar-nyaya .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.topbar-nyaya {
+    background-color: var(--nyaya-surface);
+    border-bottom: 1px solid var(--nyaya-border);
+}
+
+@media (max-width: 991.98px) {
+    .sidebar-nyaya {
+        position: fixed;
+        top: 0;
+        left: -260px;
+        bottom: 0;
+        z-index: 1050;
+        transition: left 0.25s ease;
+    }
+    .sidebar-nyaya.show {
+        left: 0;
+    }
+}
+
+/* Dark mode table & input readability */
+[data-theme="dark"] .table {
+    color: var(--nyaya-text);
+}
+[data-theme="dark"] .table-light {
+    --bs-table-bg: #0F172A;
+    --bs-table-color: #E2E8F0;
+}
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] .bg-white {
+    background-color: #1E293B !important;
+    color: var(--nyaya-text) !important;
+}
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: #0F172A;
+    color: #F1F5F9;
+    border-color: #334155;
+}
+
+/* High Contrast Accessibility Mode */
+body.high-contrast {
+    filter: contrast(1.25);
+}
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--nyaya-saffron) !important;
+    outline-offset: 2px;
+}

@@ -1,0 +1,45 @@
+@model Complaint
+@{
+    Layout = User.IsInRole(AppRoles.SuperAdmin) ? "_AdminLayout"
+           : User.IsInRole(AppRoles.DepartmentOfficer) ? "_OfficerLayout"
+           : "_CitizenLayout";
+    ViewData["Title"] = $"Grievance {Model.ReferenceNumber}";
+}
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <span class="badge bg-dark mb-2">@Model.ReferenceNumber</span>
+            <h4 class="fw-bold text-navy">@Model.Subject</h4>
+            <small class="text-muted">Category: @Model.Category &bull; Priority: @Model.Priority &bull; SLA Due: @Model.DueDate.ToString("dd MMM yyyy HH:mm") UTC</small>
+        </div>
+        <span class="badge fs-6 @(Model.IsEscalated ? "bg-danger" : "bg-info text-dark")">@Model.Status</span>
+    </div>
+    <p>@Model.Description</p>
+    @if (Model.IsEscalated)
+    {
+        <div class="alert alert-danger small"><strong>Auto-Escalated:</strong> @Model.EscalationReason</div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.ResolutionRemarks))
+    {
+        <div class="alert alert-success small"><strong>Resolution Remarks:</strong> @Model.ResolutionRemarks</div>
+    }
+
+    @if (User.IsInRole(AppRoles.DepartmentOfficer) || User.IsInRole(AppRoles.SuperAdmin))
+    {
+        <hr />
+        <form asp-action="UpdateStatus" method="post" class="row g-3">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="col-md-4">
+                <label class="form-label small fw-semibold">Update Status</label>
+                <select name="status" asp-items="Html.GetEnumSelectList<ComplaintStatus>()" class="form-select"></select>
+            </div>
+            <div class="col-md-8">
+                <label class="form-label small fw-semibold">Resolution Remarks</label>
+                <input type="text" name="resolutionRemarks" value="@Model.ResolutionRemarks" class="form-control" />
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-sm">Update Grievance</button>
+            </div>
+        </form>
+    }
+</div>

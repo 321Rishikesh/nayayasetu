@@ -1,0 +1,35 @@
+@model List<Complaint>
+@{
+    Layout = User.IsInRole(AppRoles.SuperAdmin) ? "_AdminLayout"
+           : User.IsInRole(AppRoles.DepartmentOfficer) ? "_OfficerLayout"
+           : "_CitizenLayout";
+    ViewData["Title"] = "Grievances & Complaints";
+}
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold text-navy mb-0">Grievance Register</h5>
+        @if (User.IsInRole(AppRoles.Citizen))
+        {
+            <a asp-action="Create" class="btn btn-danger btn-sm"><i class="fa-solid fa-plus me-1"></i>Register Grievance</a>
+        }
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle small">
+            <thead class="table-light"><tr><th>Ref #</th><th>Subject</th><th>Category</th><th>Priority</th><th>SLA Due</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@c.ReferenceNumber</td>
+                    <td>@c.Subject</td>
+                    <td>@c.Category</td>
+                    <td><span class="badge @(c.Priority == ComplaintPriority.Critical ? "bg-danger" : c.Priority == ComplaintPriority.High ? "bg-warning text-dark" : "bg-secondary")">@c.Priority</span></td>
+                    <td>@c.DueDate.ToString("dd MMM yyyy HH:mm")</td>
+                    <td><span class="badge @(c.IsEscalated ? "bg-danger" : "bg-info text-dark")">@c.Status @(c.IsEscalated ? "(!)" : "")</span></td>
+                    <td><a asp-action="Details" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary">View</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

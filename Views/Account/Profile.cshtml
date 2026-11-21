@@ -1,0 +1,41 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+<div class="container py-4">
+    <div class="card border-0 shadow-sm rounded-4 p-4 mx-auto" style="max-width: 720px;">
+        <h4 class="fw-bold text-navy mb-3">Personal Profile</h4>
+        <form asp-action="Profile" method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="FullName" class="form-label fw-semibold"></label>
+                    <input asp-for="FullName" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label fw-semibold"></label>
+                    <input asp-for="Email" class="form-control" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label fw-semibold"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PreferredLanguage" class="form-label fw-semibold">Preferred Language</label>
+                    <select asp-for="PreferredLanguage" class="form-select">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label asp-for="Address" class="form-label fw-semibold"></label>
+                    <input asp-for="Address" class="form-control" />
+                </div>
+                <div class="col-md-4"><label asp-for="City" class="form-label fw-semibold"></label><input asp-for="City" class="form-control" /></div>
+                <div class="col-md-4"><label asp-for="State" class="form-label fw-semibold"></label><input asp-for="State" class="form-control" /></div>
+                <div class="col-md-4"><label asp-for="PinCode" class="form-label fw-semibold"></label><input asp-for="PinCode" class="form-control" /></div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
+        </form>
+    </div>
+</div>

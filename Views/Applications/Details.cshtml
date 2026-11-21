@@ -1,0 +1,86 @@
+@model Application
+@{
+    Layout = User.IsInRole(AppRoles.SuperAdmin) ? "_AdminLayout"
+           : User.IsInRole(AppRoles.DepartmentOfficer) ? "_OfficerLayout"
+           : "_CitizenLayout";
+    ViewData["Title"] = $"Application {Model.TrackingId}";
+}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <span class="badge bg-primary mb-2">@Model.TrackingId</span>
+                    <h4 class="fw-bold text-navy mb-1">@Model.Title</h4>
+                    <small class="text-muted">@Model.Department?.Name &bull; @Model.Category?.Name &bull; Submitted @Model.SubmissionDate.ToString("dd MMM yyyy")</small>
+                </div>
+                <span class="badge bg-info text-dark fs-6">@Model.Status</span>
+            </div>
+            <p class="mb-3">@Model.Description</p>
+            @if (!string.IsNullOrWhiteSpace(Model.OfficerRemarks))
+            {
+                <div class="alert alert-light border-start border-4 border-primary small mb-0">
+                    <strong>Latest Officer Remarks:</strong> @Model.OfficerRemarks
+                </div>
+            }
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Status History</h6>
+            @foreach (var h in Model.History.Where(x => x.IsVisibleToCitizen || !User.IsInRole(AppRoles.Citizen)))
+            {
+                <div class="border-start border-2 border-primary ps-3 pb-3 small">
+                    <div class="d-flex justify-content-between">
+                        <strong>@h.Status</strong>
+                        <span class="text-muted">@h.ChangedAt.ToString("dd MMM yyyy HH:mm") UTC</span>
+                    </div>
+                    <div class="text-muted">@h.Remarks</div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+            <h6 class="fw-bold text-navy mb-3">Supporting Documents</h6>
+            @if (!Model.Documents.Any())
+            {
+                <p class="small text-muted">No documents uploaded yet.</p>
+            }
+            else
+            {
+                @foreach (var doc in Model.Documents)
+                {
+                    <div class="p-2 mb-2 border rounded-3 small">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold text-truncate" style="max-width: 170px;">@doc.FileName</span>
+                            <span class="badge @(doc.VerificationStatus == DocumentVerificationStatus.Verified ? "bg-success" : doc.VerificationStatus == DocumentVerificationStatus.Rejected ? "bg-danger" : "bg-warning text-dark")">@doc.VerificationStatus</span>
+                        </div>
+                        <div class="text-muted">@doc.Category &bull; @(doc.FileSizeBytes / 1024) KB</div>
+                        @if (!string.IsNullOrWhiteSpace(doc.OcrQualityNote))
+                        {
+                            <div class="text-info mt-1"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>@doc.OcrQualityNote</div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(doc.RejectionReason))
+                        {
+                            <div class="text-danger mt-1">Reason: @doc.RejectionReason</div>
+                        }
+                        <a asp-controller="Documents" asp-action="Download" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-primary mt-2 w-100">Secure Download</a>
+                    </div>
+                }
+            }
+
+            @if (User.IsInRole(AppRoles.Citizen))
+            {
+                <hr />
+                <form asp-action="UploadDocument" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="applicationId" value="@Model.Id" />
+                    <label class="form-label small fw-semibold">Upload Additional Document</label>
+                    <select name="category" asp-items="Html.GetEnumSelectList<DocumentCategory>()" class="form-select form-select-sm mb-2"></select>
+                    <input type="file" name="file" class="form-control form-control-sm mb-2" accept=".pdf,.jpg,.jpeg,.png" required />
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Upload Securely</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+@model OfficerDashboardViewModel
+@{
+    Layout = "_OfficerLayout";
+    ViewData["Title"] = "Department Officer Dashboard";
+}
+<div class="mb-4">
+    <h4 class="fw-bold text-navy mb-0">@Model.OfficerName</h4>
+    <small class="text-muted">@Model.DepartmentName</small>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Assigned Applications</small><div class="h3 fw-bold text-navy mb-0">@Model.AssignedApplicationsCount</div></div></div>
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Pending Review</small><div class="h3 fw-bold text-warning mb-0">@Model.PendingReviewCount</div></div></div>
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Overdue Deadlines</small><div class="h3 fw-bold text-danger mb-0">@Model.OverdueDeadlinesCount</div></div></div>
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Active Grievances</small><div class="h3 fw-bold text-primary mb-0">@Model.AssignedComplaintsCount</div></div></div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+    <h6 class="fw-bold text-navy mb-3">Assigned Citizen Applications</h6>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle small">
+            <thead class="table-light"><tr><th>Tracking ID</th><th>Applicant</th><th>Title</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var app in Model.AssignedApplications)
+            {
+                var overdue = app.DueDate < DateTime.UtcNow && app.ResolvedAt == null;
+                <tr>
+                    <td class="fw-bold text-primary">@app.TrackingId</td>
+                    <td>@app.Citizen?.FullName</td>
+                    <td>@app.Title</td>
+                    <td class="@(overdue ? "text-danger fw-bold" : "")">@app.DueDate.ToString("dd MMM yyyy")</td>
+                    <td><span class="badge bg-info text-dark">@app.Status</span></td>
+                    <td><a asp-action="Review" asp-route-id="@app.Id" class="btn btn-sm btn-primary">Review &amp; Verify</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <h6 class="fw-bold text-navy mb-3">Assigned Grievances</h6>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle small">
+            <thead class="table-light"><tr><th>Ref #</th><th>Subject</th><th>Priority</th><th>Due</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var c in Model.AssignedComplaints)
+            {
+                <tr>
+                    <td class="fw-bold">@c.ReferenceNumber</td>
+                    <td>@c.Subject</td>
+                    <td><span class="badge @(c.Priority == ComplaintPriority.Critical ? "bg-danger" : c.Priority == ComplaintPriority.High ? "bg-warning text-dark" : "bg-secondary")">@c.Priority</span></td>
+                    <td>@c.DueDate.ToString("dd MMM HH:mm")</td>
+                    <td><span class="badge @(c.IsEscalated ? "bg-danger" : "bg-info text-dark")">@c.Status</span></td>
+                    <td><a asp-controller="Complaints" asp-action="Details" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary">Manage</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

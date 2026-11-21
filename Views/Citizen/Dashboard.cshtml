@@ -1,0 +1,102 @@
+@model CitizenDashboardViewModel
+@{
+    Layout = "_CitizenLayout";
+    ViewData["Title"] = "Citizen Dashboard";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <div>
+        <h4 class="fw-bold text-navy mb-0">Welcome back, @Model.CitizenName</h4>
+        <small class="text-muted">Manage your legal service applications, grievances, legal aid requests, and consultations.</small>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-controller="Applications" asp-action="Create" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus me-1"></i>New Application</a>
+        <a asp-controller="Complaints" asp-action="Create" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-bullhorn me-1"></i>File Grievance</a>
+        <a asp-controller="LegalAid" asp-action="Create" class="btn btn-saffron btn-sm fw-semibold"><i class="fa-solid fa-scale-balanced me-1"></i>Legal Aid</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Total Apps</small><div class="h3 fw-bold text-navy mb-0">@Model.TotalApplications</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Pending</small><div class="h3 fw-bold text-warning mb-0">@Model.PendingApplications</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Approved</small><div class="h3 fw-bold text-success mb-0">@Model.ApprovedApplications</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Rejected</small><div class="h3 fw-bold text-danger mb-0">@Model.RejectedApplications</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Active Grievances</small><div class="h3 fw-bold text-secondary mb-0">@Model.ActiveComplaints</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Legal Aid</small><div class="h3 fw-bold text-primary mb-0">@Model.LegalAidRequestsCount</div></div></div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-navy mb-0">Recent Applications</h6>
+                <a asp-controller="Applications" asp-action="Index" class="small">View All</a>
+            </div>
+            @if (!Model.RecentApplications.Any())
+            {
+                <div class="text-center py-4 text-muted small">No applications submitted yet. Click <strong>New Application</strong> to start.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-light"><tr><th>Tracking ID</th><th>Title</th><th>Department</th><th>Status</th><th></th></tr></thead>
+                        <tbody>
+                        @foreach (var app in Model.RecentApplications)
+                        {
+                            <tr>
+                                <td class="fw-semibold text-primary">@app.TrackingId</td>
+                                <td>@app.Title</td>
+                                <td>@app.Department?.Name</td>
+                                <td><span class="badge bg-info text-dark">@app.Status</span></td>
+                                <td><a asp-controller="Applications" asp-action="Details" asp-route-id="@app.Id" class="btn btn-sm btn-outline-primary">View</a></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-navy mb-0">Recent Notifications</h6>
+                <a asp-controller="Notifications" asp-action="Index" class="small">All</a>
+            </div>
+            @if (!Model.RecentNotifications.Any())
+            {
+                <p class="small text-muted mb-0">You're all caught up.</p>
+            }
+            else
+            {
+                <div class="list-group list-group-flush small">
+                    @foreach (var n in Model.RecentNotifications)
+                    {
+                        <div class="list-group-item px-0 @(n.IsRead ? "opacity-75" : "fw-semibold")">
+                            <div>@n.Title</div>
+                            <div class="text-muted fw-normal">@n.Message</div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Upcoming Consultations</h6>
+            @if (!Model.UpcomingAppointments.Any())
+            {
+                <p class="small text-muted mb-0">No upcoming legal consultations.</p>
+            }
+            else
+            {
+                @foreach (var a in Model.UpcomingAppointments)
+                {
+                    <div class="p-2 mb-2 rounded-3 bg-light small">
+                        <div class="fw-semibold">@a.Subject</div>
+                        <div class="text-muted">@a.ScheduledDateTime.ToString("dd MMM yyyy, HH:mm") (@a.Mode)</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

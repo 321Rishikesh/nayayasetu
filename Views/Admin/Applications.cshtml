@@ -1,0 +1,67 @@
+@model AdminApplicationListViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Applications & Smart Assignment";
+}
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <form method="get" class="row g-2 mb-4">
+        <div class="col-md-4"><input type="text" name="search" value="@Model.Search" class="form-control form-control-sm" placeholder="Search Tracking ID, Title, Citizen..." /></div>
+        <div class="col-md-3">
+            <select name="departmentId" class="form-select form-select-sm">
+                <option value="">All Departments</option>
+                @foreach (var d in Model.Departments)
+                {
+                    <option value="@d.Id" selected="@(Model.SelectedDepartmentId == d.Id)">@d.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select form-select-sm">
+                <option value="">All Statuses</option>
+                @foreach (var st in Enum.GetValues<ApplicationStatus>())
+                {
+                    <option value="@st" selected="@(Model.SelectedStatus == st)">@st</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2"><button type="submit" class="btn btn-primary btn-sm w-100">Filter</button></div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle small">
+            <thead class="table-light"><tr><th>Tracking ID</th><th>Applicant</th><th>Title &amp; Dept</th><th>Status</th><th>Smart Assignment</th></tr></thead>
+            <tbody>
+            @foreach (var app in Model.Applications)
+            {
+                Model.Recommendations.TryGetValue(app.Id, out var rec);
+                <tr>
+                    <td class="fw-bold text-primary"><a asp-controller="Applications" asp-action="Details" asp-route-id="@app.Id">@app.TrackingId</a></td>
+                    <td>@app.Citizen?.FullName</td>
+                    <td>
+                        <div class="fw-semibold">@app.Title</div>
+                        <small class="text-muted">@app.Department?.Name</small>
+                    </td>
+                    <td><span class="badge bg-info text-dark">@app.Status</span></td>
+                    <td>
+                        @if (rec != null && string.IsNullOrEmpty(app.AssignedOfficerId))
+                        {
+                            <div class="text-success mb-1"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>Recommended: <strong>@rec.OfficerName</strong> — @rec.Rationale</div>
+                        }
+                        <form asp-action="AssignApplication" method="post" class="d-flex gap-1">
+                            <input type="hidden" name="applicationId" value="@app.Id" />
+                            <select name="officerUserId" class="form-select form-select-sm">
+                                @foreach (var o in Model.Officers)
+                                {
+                                    var isSelected = app.AssignedOfficerId == o.UserId || (string.IsNullOrEmpty(app.AssignedOfficerId) && rec?.OfficerUserId == o.UserId);
+                                    <option value="@o.UserId" selected="@isSelected">@o.User?.FullName (@o.Department?.Code)</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Assign</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

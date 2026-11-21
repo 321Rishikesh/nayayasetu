@@ -1,0 +1,52 @@
+@model LegalAidDashboardViewModel
+@{
+    Layout = "_LegalAidLayout";
+    ViewData["Title"] = "Legal Aid Officer Dashboard";
+}
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Total Requests</small><div class="h3 fw-bold text-navy mb-0">@Model.TotalRequests</div></div></div>
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Pending Eligibility</small><div class="h3 fw-bold text-warning mb-0">@Model.PendingEligibility</div></div></div>
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Consultations</small><div class="h3 fw-bold text-primary mb-0">@Model.ScheduledConsultations</div></div></div>
+    <div class="col-md-3"><div class="card stat-card p-3"><small class="text-muted">Completed</small><div class="h3 fw-bold text-success mb-0">@Model.CompletedCases</div></div></div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+    <h6 class="fw-bold text-navy mb-3">Legal Aid Requests</h6>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle small">
+            <thead class="table-light"><tr><th>Ref #</th><th>Citizen</th><th>Case Type</th><th>Income (INR)</th><th>Category</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var r in Model.Requests)
+            {
+                <tr>
+                    <td class="fw-bold">@r.ReferenceNumber</td>
+                    <td>@r.Citizen?.FullName</td>
+                    <td>@r.CaseType</td>
+                    <td>@r.AnnualIncome.ToString("N0")</td>
+                    <td>@r.EligibilityCategory</td>
+                    <td><span class="badge bg-info text-dark">@r.Status</span></td>
+                    <td><a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-primary">Manage</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <h6 class="fw-bold text-navy mb-3">Scheduled Consultations</h6>
+    @foreach (var a in Model.Appointments)
+    {
+        <div class="border rounded-3 p-3 mb-2 d-flex flex-wrap justify-content-between align-items-center small gap-2">
+            <div>
+                <strong>@a.Subject</strong> — @a.Citizen?.FullName
+                <div class="text-muted">@a.ScheduledDateTime.ToString("dd MMM yyyy HH:mm") &bull; @a.Mode &bull; Status: <strong>@a.Status</strong></div>
+            </div>
+            <form asp-action="UpdateAppointment" method="post" class="d-flex gap-2">
+                <input type="hidden" name="id" value="@a.Id" />
+                <select name="status" asp-items="Html.GetEnumSelectList<AppointmentStatus>()" class="form-select form-select-sm"></select>
+                <button type="submit" class="btn btn-sm btn-success">Update</button>
+            </form>
+        </div>
+    }
+</div>

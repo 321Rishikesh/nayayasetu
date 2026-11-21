@@ -1,0 +1,44 @@
+@model CreateLegalAidViewModel
+@{
+    Layout = "_CitizenLayout";
+    ViewData["Title"] = "Apply for Free Legal Aid";
+}
+<div class="card border-0 shadow-sm rounded-4 p-4 mx-auto" style="max-width: 780px;">
+    <h5 class="fw-bold text-navy mb-1">Free Legal Aid Application</h5>
+    <p class="small text-muted mb-3">Check official eligibility rules at <a href="https://nalsa.gov.in/legal-aid/" target="_blank" rel="noopener">NALSA Legal Aid</a>.</p>
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="CaseType" class="form-label fw-semibold"></label>
+                <input asp-for="CaseType" class="form-control" placeholder="e.g., Family / Civil / Consumer / Labour" />
+                <span asp-validation-for="CaseType" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="AnnualIncome" class="form-label fw-semibold"></label>
+                <input asp-for="AnnualIncome" type="number" step="1000" class="form-control" />
+            </div>
+            <div class="col-12">
+                <label asp-for="EligibilityCategory" class="form-label fw-semibold"></label>
+                <select asp-for="EligibilityCategory" class="form-select">
+                    <option>Low Income Group (Section 12(h) LSA Act)</option>
+                    <option>Woman / Child (Section 12(c) LSA Act)</option>
+                    <option>SC / ST Member (Section 12(a) LSA Act)</option>
+                    <option>Person with Disability (Section 12(d) LSA Act)</option>
+                    <option>Industrial Workman (Section 12(f) LSA Act)</option>
+                    <option>Senior Citizen / Custody</option>
+                    <option>General</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label asp-for="CaseSummary" class="form-label fw-semibold"></label>
+                <textarea asp-for="CaseSummary" rows="4" class="form-control"></textarea>
+                <span asp-validation-for="CaseSummary" class="text-danger small"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="SupportingDocument" class="form-label fw-semibold"></label>
+                <input asp-for="SupportingDocument" type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4 px-4">Submit Legal Aid Request</button>
+    </form>
+</div>

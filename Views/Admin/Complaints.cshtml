@@ -1,0 +1,69 @@
+@model AdminComplaintsViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Complaints & Escalation Rules";
+}
+<div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold text-navy mb-0">All Citizen Grievances</h6>
+        <form asp-action="RunEscalationCheck" method="post">
+            <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-bolt me-1"></i>Run Overdue Escalation Check Now</button>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle small">
+            <thead class="table-light"><tr><th>Ref #</th><th>Subject</th><th>Priority</th><th>Due Date</th><th>Status</th><th>Assign Officer</th></tr></thead>
+            <tbody>
+            @foreach (var c in Model.Complaints)
+            {
+                <tr>
+                    <td class="fw-bold"><a asp-controller="Complaints" asp-action="Details" asp-route-id="@c.Id">@c.ReferenceNumber</a></td>
+                    <td>@c.Subject</td>
+                    <td><span class="badge @(c.Priority == ComplaintPriority.Critical ? "bg-danger" : "bg-warning text-dark")">@c.Priority</span></td>
+                    <td>@c.DueDate.ToString("dd MMM HH:mm")</td>
+                    <td><span class="badge @(c.IsEscalated ? "bg-danger" : "bg-info text-dark")">@c.Status</span></td>
+                    <td>
+                        <form asp-action="AssignComplaint" method="post" class="d-flex gap-1">
+                            <input type="hidden" name="complaintId" value="@c.Id" />
+                            <select name="officerUserId" class="form-select form-select-sm">
+                                @foreach (var o in Model.Officers)
+                                {
+                                    <option value="@o.UserId" selected="@(c.AssignedOfficerId == o.UserId)">@o.User?.FullName</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Assign</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <h6 class="fw-bold text-navy mb-3">Automatic Escalation SLA Rules</h6>
+    <div class="row g-3">
+        @foreach (var rule in Model.EscalationRules)
+        {
+            <div class="col-md-6">
+                <form asp-action="UpdateEscalationRule" method="post" class="border rounded-3 p-3 small">
+                    <input type="hidden" name="id" value="@rule.Id" />
+                    <div class="d-flex justify-content-between mb-2">
+                        <strong>@rule.Priority Priority</strong>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" name="autoEscalateEnabled" value="true" checked="@rule.AutoEscalateEnabled" class="form-check-input" />
+                            <label class="form-check-label">Auto-Escalate</label>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-sm mb-2">
+                        <span class="input-group-text">SLA Hours</span>
+                        <input type="number" name="resolutionHours" value="@rule.ResolutionHours" class="form-control" min="1" max="720" />
+                    </div>
+                    <input type="text" name="escalationNote" value="@rule.EscalationNote" class="form-control form-control-sm mb-2" />
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Save Rule</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,74 @@
+@model ApplicationReviewViewModel
+@{
+    Layout = "_OfficerLayout";
+    ViewData["Title"] = $"Review {Model.Application.TrackingId}";
+}
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+            <span class="badge bg-primary align-self-start mb-2">@Model.Application.TrackingId</span>
+            <h4 class="fw-bold text-navy">@Model.Application.Title</h4>
+            <p class="small text-muted">Applicant: <strong>@Model.Application.Citizen?.FullName</strong> (@Model.Application.Citizen?.Email) &bull; Dept: @Model.Application.Department?.Name</p>
+            <p>@Model.Application.Description</p>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Uploaded Documents &amp; Smart OCR Notes</h6>
+            @if (!Model.Application.Documents.Any())
+            {
+                <p class="small text-muted">No documents attached.</p>
+            }
+            @foreach (var doc in Model.Application.Documents)
+            {
+                <div class="border rounded-3 p-3 mb-3 small">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong>@doc.FileName</strong>
+                        <span class="badge @(doc.VerificationStatus == DocumentVerificationStatus.Verified ? "bg-success" : doc.VerificationStatus == DocumentVerificationStatus.Rejected ? "bg-danger" : "bg-warning text-dark")">@doc.VerificationStatus</span>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(doc.OcrQualityNote))
+                    {
+                        <div class="text-info mb-2"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>OCR Assistance: @doc.OcrQualityNote</div>
+                    }
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <a asp-controller="Documents" asp-action="Download" asp-route-id="@doc.Id" class="btn btn-sm btn-outline-primary">Download</a>
+                        <form asp-action="VerifyDocument" method="post" class="d-inline">
+                            <input type="hidden" name="documentId" value="@doc.Id" />
+                            <input type="hidden" name="applicationId" value="@Model.Application.Id" />
+                            <input type="hidden" name="status" value="@DocumentVerificationStatus.Verified" />
+                            <button type="submit" class="btn btn-sm btn-success">Verify</button>
+                        </form>
+                        <form asp-action="VerifyDocument" method="post" class="d-flex gap-1">
+                            <input type="hidden" name="documentId" value="@doc.Id" />
+                            <input type="hidden" name="applicationId" value="@Model.Application.Id" />
+                            <input type="hidden" name="status" value="@DocumentVerificationStatus.Rejected" />
+                            <input type="text" name="rejectionReason" class="form-control form-control-sm" placeholder="Rejection reason..." required />
+                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Update Application Decision</h6>
+            <form asp-action="UpdateStatus" method="post">
+                <input type="hidden" name="id" value="@Model.Application.Id" />
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">New Status</label>
+                    <select name="newStatus" asp-items="Html.GetEnumSelectList<ApplicationStatus>()" class="form-select"></select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Officer Remarks / Decision Reason</label>
+                    <textarea name="remarks" rows="4" class="form-control" required>@Model.Remarks</textarea>
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" name="visibleToCitizen" value="true" checked class="form-check-input" id="visCheck" />
+                    <label class="form-check-label small" for="visCheck">Show remarks to citizen on Tracking page</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save Status Update</button>
+            </form>
+        </div>
+    </div>
+</div>

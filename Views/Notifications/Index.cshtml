@@ -1,0 +1,49 @@
+@model List<Notification>
+@{
+    Layout = User.IsInRole(AppRoles.SuperAdmin) ? "_AdminLayout"
+           : User.IsInRole(AppRoles.DepartmentOfficer) ? "_OfficerLayout"
+           : User.IsInRole(AppRoles.LegalAidOfficer) ? "_LegalAidLayout"
+           : "_CitizenLayout";
+    ViewData["Title"] = "Notifications";
+}
+<div class="card border-0 shadow-sm rounded-4 p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold text-navy mb-0">In-App Notifications</h5>
+        <form asp-action="MarkAllRead" method="post">
+            <button type="submit" class="btn btn-sm btn-outline-primary">Mark All as Read</button>
+        </form>
+    </div>
+    @if (!Model.Any())
+    {
+        <p class="text-muted small">No notifications yet.</p>
+    }
+    else
+    {
+        <div class="list-group list-group-flush">
+            @foreach (var n in Model)
+            {
+                <div class="list-group-item d-flex justify-content-between align-items-start @(n.IsRead ? "opacity-75" : "bg-light")">
+                    <div>
+                        <span class="badge bg-secondary me-1">@n.Type</span>
+                        <strong>@n.Title</strong>
+                        <p class="small text-muted mb-1">@n.Message</p>
+                        <small class="text-muted">@n.CreatedAt.ToString("dd MMM yyyy HH:mm") UTC</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        @if (!string.IsNullOrWhiteSpace(n.LinkUrl))
+                        {
+                            <a href="@n.LinkUrl" class="btn btn-sm btn-outline-primary">Open</a>
+                        }
+                        @if (!n.IsRead)
+                        {
+                            <form asp-action="MarkRead" method="post">
+                                <input type="hidden" name="id" value="@n.Id" />
+                                <button type="submit" class="btn btn-sm btn-light">Mark Read</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

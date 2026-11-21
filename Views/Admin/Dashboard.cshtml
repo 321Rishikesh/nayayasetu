@@ -1,0 +1,64 @@
+@model AdminAnalyticsViewModel
+@using System.Text.Json
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Super Admin Analytics Dashboard";
+}
+<div class="row g-3 mb-4">
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Total Users</small><div class="h3 fw-bold text-navy mb-0">@Model.TotalUsers</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Applications</small><div class="h3 fw-bold text-primary mb-0">@Model.TotalApplications</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Pending Apps</small><div class="h3 fw-bold text-warning mb-0">@Model.PendingApplications</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Resolved Apps</small><div class="h3 fw-bold text-success mb-0">@Model.ResolvedApplications</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Complaints (Esc)</small><div class="h3 fw-bold text-danger mb-0">@Model.TotalComplaints (@Model.EscalatedComplaints)</div></div></div>
+    <div class="col-6 col-xl-2"><div class="card stat-card p-3"><small class="text-muted">Avg Processing</small><div class="h3 fw-bold text-navy mb-0">@Model.AverageProcessingDays d</div></div></div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Department-Wise Applications</h6>
+            <canvas id="deptChart" height="220"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Monthly Application Trends (6 Months)</h6>
+            <canvas id="monthlyChart" height="220"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <h6 class="fw-bold text-navy mb-3">Officer Active Workload</h6>
+            <canvas id="officerChart" height="120"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const deptLabels = @Html.Raw(JsonSerializer.Serialize(Model.DepartmentLabels));
+    const deptCounts = @Html.Raw(JsonSerializer.Serialize(Model.DepartmentApplicationCounts));
+    const monthLabels = @Html.Raw(JsonSerializer.Serialize(Model.MonthlyLabels));
+    const monthCounts = @Html.Raw(JsonSerializer.Serialize(Model.MonthlyApplicationCounts));
+    const officerLabels = @Html.Raw(JsonSerializer.Serialize(Model.OfficerLabels));
+    const officerLoads = @Html.Raw(JsonSerializer.Serialize(Model.OfficerActiveWorkloads));
+
+    new Chart(document.getElementById('deptChart'), {
+        type: 'doughnut',
+        data: { labels: deptLabels, datasets: [{ data: deptCounts, backgroundColor: ['#12345A', '#246B9E', '#F3A847', '#198754'] }] },
+        options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'line',
+        data: { labels: monthLabels, datasets: [{ label: 'Applications', data: monthCounts, borderColor: '#246B9E', backgroundColor: 'rgba(36,107,158,0.15)', fill: true, tension: 0.35 }] },
+        options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+
+    new Chart(document.getElementById('officerChart'), {
+        type: 'bar',
+        data: { labels: officerLabels, datasets: [{ label: 'Active Applications', data: officerLoads, backgroundColor: '#12345A', borderRadius: 6 }] },
+        options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+</script>
+}
