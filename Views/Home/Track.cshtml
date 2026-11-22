@@ -1,6 +1,6 @@
 @model TrackApplicationViewModel
 @{
-    ViewData["Title"] = "Track Application";
+    ViewData["Title"] = "Track Application Status";
     var stages = new[]
     {
         ApplicationStatus.Submitted,
@@ -11,72 +11,123 @@
     };
 }
 <div class="container py-5">
-    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
-        <h2 class="fw-bold text-navy mb-2"><i class="fa-solid fa-magnifying-glass-location text-saffron me-2"></i>Track Your Application</h2>
-        <p class="text-muted small mb-3">Enter your unique NyayaSetu tracking ID (e.g., <code>NYS-2026-1001</code>) to check live status and officer remarks.</p>
-        <form method="get" class="row g-2">
+    <!-- Breadcrumb & Header -->
+    <div class="mb-4">
+        <span class="badge bg-primary-subtle text-primary px-3 py-2 fw-semibold mb-2">Public Verification Service</span>
+        <h2 class="fw-bold" style="color: var(--nyaya-navy);"><i class="fa-solid fa-magnifying-glass-location text-warning me-2"></i>Smart Application Tracking Portal</h2>
+        <p class="text-muted">Enter your unique NyayaSetu Tracking ID to inspect real-time departmental review stages, document verification outcomes, and officer remarks.</p>
+    </div>
+
+    <!-- Tracking Input Card -->
+    <div class="card stat-card p-4 p-md-5 mb-4 rounded-4 shadow-sm">
+        <form method="get" class="row g-3 align-items-center">
             <div class="col-md-9">
-                <input type="text" name="trackingId" value="@Model.TrackingId" class="form-control form-control-lg" placeholder="Enter Tracking ID (e.g., NYS-2026-1001)" required />
+                <label class="form-label fw-semibold small text-muted">NyayaSetu Unique Application Tracking ID</label>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-transparent border-end-0 text-primary">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </span>
+                    <input type="text" name="trackingId" value="@Model.TrackingId" class="form-control border-start-0" placeholder="e.g. NYS-2026-1001" required />
+                </div>
             </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary btn-lg w-100">Track Status</button>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i>Track Status
+                </button>
             </div>
         </form>
+        <div class="mt-3 small text-muted d-flex flex-wrap align-items-center gap-2">
+            <span class="fw-semibold">Sample Tracking IDs:</span>
+            <a asp-action="Track" asp-route-trackingId="NYS-2026-1001" class="badge bg-primary-subtle text-primary text-decoration-none">NYS-2026-1001</a>
+            <a asp-action="Track" asp-route-trackingId="NYS-2026-1002" class="badge bg-success-subtle text-success text-decoration-none">NYS-2026-1002</a>
+            <a asp-action="Track" asp-route-trackingId="NYS-2026-1003" class="badge bg-warning-subtle text-warning text-decoration-none">NYS-2026-1003</a>
+        </div>
     </div>
 
     @if (Model.Searched && Model.Application == null)
     {
-        <div class="alert alert-warning rounded-4 shadow-sm">
-            <i class="fa-solid fa-circle-exclamation me-2"></i>No application found for Tracking ID <strong>@Model.TrackingId</strong>. Please verify the ID and try again.
+        <div class="alert alert-warning rounded-4 shadow-sm p-4">
+            <div class="d-flex gap-3 align-items-center">
+                <i class="fa-solid fa-triangle-exclamation fs-3 text-warning"></i>
+                <div>
+                    <h5 class="fw-bold mb-1">Application Record Not Found</h5>
+                    <p class="mb-0 text-muted small">No record was found for Tracking ID <strong>@Model.TrackingId</strong>. Please ensure the tracking ID follows the <code>NYS-YYYY-XXXX</code> format and retry.</p>
+                </div>
+            </div>
         </div>
     }
     else if (Model.Application != null)
     {
         var app = Model.Application;
-        <div class="card border-0 shadow-sm rounded-4 p-4">
-            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        var statusBadgeClass = app.Status == ApplicationStatus.Resolved ? "bg-success text-white"
+            : app.Status == ApplicationStatus.Approved ? "bg-primary text-white"
+            : app.Status == ApplicationStatus.Rejected ? "bg-danger text-white"
+            : "bg-warning text-dark";
+
+        <div class="card stat-card rounded-4 p-4 p-md-5 shadow-sm">
+            <!-- Header Summary Row -->
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4 pb-3 border-bottom" style="border-color: var(--nyaya-border) !important;">
                 <div>
-                    <span class="badge bg-primary mb-2">@app.TrackingId</span>
-                    <h4 class="fw-bold text-navy mb-1">@app.Title</h4>
-                    <div class="small text-muted">
-                        Department: <strong>@app.Department?.Name</strong> | Category: <strong>@app.Category?.Name</strong> | Submitted: <strong>@app.SubmissionDate.ToString("dd MMM yyyy")</strong>
+                    <span class="badge bg-primary px-3 py-2 fs-6 mb-2">@app.TrackingId</span>
+                    <h3 class="fw-bold mb-1" style="color: var(--nyaya-navy);">@app.Title</h3>
+                    <div class="small text-muted d-flex flex-wrap gap-3 mt-2">
+                        <span><i class="fa-solid fa-building-columns text-primary me-1"></i><strong>Department:</strong> @(app.Department?.Name ?? "General")</span>
+                        <span><i class="fa-solid fa-tag text-primary me-1"></i><strong>Category:</strong> @(app.Category?.Name ?? "Standard")</span>
+                        <span><i class="fa-regular fa-calendar-check text-primary me-1"></i><strong>Submitted:</strong> @app.SubmissionDate.ToString("dd MMM yyyy, HH:mm")</span>
                     </div>
                 </div>
-                <span class="badge fs-6 px-3 py-2 bg-info text-dark">@app.Status</span>
+                <div class="text-end">
+                    <span class="badge @statusBadgeClass fs-6 px-3 py-2 rounded-pill">
+                        <i class="fa-solid fa-circle-dot me-1"></i>@app.Status
+                    </span>
+                    <div class="small text-muted mt-2">
+                        Target SLA: <strong>@(app.Category?.EstimatedProcessingDays ?? 15) days</strong>
+                    </div>
+                </div>
             </div>
 
-            <!-- Visual Progress Bar -->
-            <div class="row g-2 text-center mb-4">
+            <!-- Visual Progress Stages Pipeline -->
+            <h5 class="fw-bold mb-3" style="color: var(--nyaya-navy);"><i class="fa-solid fa-bars-progress me-2 text-primary"></i>Application Progress Pipeline</h5>
+            <div class="row g-2 text-center mb-5">
                 @foreach (var st in stages)
                 {
-                    var reached = app.Status != ApplicationStatus.Rejected && ((int)app.Status >= (int)st);
+                    var isRejected = app.Status == ApplicationStatus.Rejected;
+                    var reached = !isRejected && ((int)app.Status >= (int)st);
+                    var isCurrent = !isRejected && app.Status == st;
+                    var stepColorClass = reached ? "bg-primary text-white border-primary" : "bg-light-subtle text-muted border";
+                    if (isCurrent) stepColorClass = "bg-success text-white border-success shadow-sm";
+
                     <div class="col">
-                        <div class="p-2 rounded-3 border @(reached ? "bg-primary text-white border-primary" : "bg-light text-muted")">
-                            <i class="fa-solid @(reached ? "fa-circle-check" : "fa-circle") me-1"></i>
-                            <div class="small fw-semibold">@st</div>
+                        <div class="p-3 rounded-3 @stepColorClass h-100 d-flex flex-column justify-content-center">
+                            <i class="fa-solid @(reached ? "fa-circle-check" : "fa-circle") mb-1 fs-5"></i>
+                            <div class="small fw-bold">@st</div>
                         </div>
                     </div>
                 }
             </div>
 
+            <!-- Remarks & Review Status -->
             @if (!string.IsNullOrWhiteSpace(app.OfficerRemarks))
             {
-                <div class="alert alert-light border-start border-4 border-primary mb-4">
-                    <div class="small text-uppercase text-muted fw-bold">Latest Officer Remarks</div>
-                    <div>@app.OfficerRemarks</div>
+                <div class="p-3 rounded-3 mb-4" style="background-color: var(--nyaya-surface-subtle); border-left: 4px solid var(--nyaya-blue);">
+                    <div class="small text-uppercase text-muted fw-bold mb-1">
+                        <i class="fa-solid fa-comment-dots text-primary me-1"></i>Latest Department Officer Remarks
+                    </div>
+                    <div class="fw-semibold" style="color: var(--nyaya-text);">@app.OfficerRemarks</div>
                 </div>
             }
 
-            <h5 class="fw-bold text-navy mb-3">Progress Timeline</h5>
-            <div class="timeline-list">
-                @foreach (var h in app.History)
+            <!-- Application Progress Timeline -->
+            <h5 class="fw-bold mb-3" style="color: var(--nyaya-navy);"><i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i>Audit Trail &amp; Lifecycle Events</h5>
+            <div class="ps-2">
+                @foreach (var h in app.History.OrderByDescending(x => x.ChangedAt))
                 {
-                    <div class="timeline-item pb-3 ps-3 border-start border-2 border-primary">
-                        <div class="d-flex justify-content-between">
-                            <strong>@h.Status</strong>
-                            <small class="text-muted">@h.ChangedAt.ToString("dd MMM yyyy, HH:mm") UTC</small>
+                    <div class="pb-3 ps-3 border-start border-3 border-primary position-relative">
+                        <div class="d-flex flex-wrap justify-content-between align-items-baseline">
+                            <strong style="color: var(--nyaya-navy); font-size: 0.95rem;">@h.Status</strong>
+                            <small class="text-muted">@h.ChangedAt.ToString("dd MMM yyyy, HH:mm")</small>
                         </div>
-                        <p class="small text-muted mb-0">@h.Remarks</p>
+                        <p class="small text-muted mb-0 mt-1">@h.Remarks</p>
                     </div>
                 }
             </div>

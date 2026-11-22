@@ -3,87 +3,203 @@
     var lang = Context.Request.Cookies["NyayaSetu.Lang"] ?? "en";
 }
 <!DOCTYPE html>
-<html lang="@lang" data-theme="light">
+<html lang="@lang" data-theme="light" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - @Loc.Get("AppName", lang)</title>
+    <title>@ViewData["Title"] - NyayaSetu | Ministry of Law and Justice, Government of India</title>
+    
+    <!-- Preconnect & Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&family=Mukta:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3.3 & FontAwesome 6.5.2 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom Portal Styles -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <!-- Academic Prototype Transparency Banner -->
-    <div class="prototype-banner text-center py-1 px-3 small">
-        <i class="fa-solid fa-graduation-cap me-1"></i>
-        <strong>@Loc.Get("PrototypeNotice", lang)</strong>
-        <span class="ms-2 d-none d-md-inline">|</span>
-        <button type="button" class="btn btn-link btn-sm text-white text-decoration-none py-0" id="contrastToggle" title="Toggle High Contrast">
-            <i class="fa-solid fa-circle-half-stroke me-1"></i>Contrast
-        </button>
-        <button type="button" class="btn btn-link btn-sm text-white text-decoration-none py-0" id="themeToggle" title="Toggle Light/Dark Mode">
-            <i class="fa-solid fa-moon me-1"></i>Theme
-        </button>
-        <form asp-controller="Home" asp-action="SetLanguage" method="post" class="d-inline ms-2">
-            <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
-            <select name="lang" onchange="this.form.submit()" class="form-select form-select-sm d-inline-block w-auto py-0 bg-dark text-white border-secondary" aria-label="Language selector">
-                <option value="en" selected="@(lang == "en")">English</option>
-                <option value="hi" selected="@(lang == "hi")">हिन्दी</option>
-                <option value="pa" selected="@(lang == "pa")">ਪੰਜਾਬੀ</option>
-            </select>
-        </form>
+    <!-- National Tricolor Top Stripe -->
+    <div class="tricolor-stripe" role="presentation"></div>
+
+    <!-- Official Government Accessibility & Helpline Strip -->
+    <div class="gov-topbar py-1 px-3">
+        <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <!-- Left: National Identity & Helplines -->
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <span class="d-inline-flex align-items-center fw-semibold text-warning">
+                    <i class="fa-solid fa-flag me-1 text-warning"></i>भारत सरकार &nbsp;|&nbsp; Government of India
+                </span>
+                <span class="d-none d-lg-inline text-white-50">|</span>
+                <span class="d-none d-md-inline gov-helpline-badge">
+                    <i class="fa-solid fa-phone me-1"></i>Legal Aid Helpline: 15100
+                </span>
+                <span class="d-none d-xl-inline text-white-50">
+                    <i class="fa-solid fa-headset me-1"></i>Tele-Law: 1800-11-0031
+                </span>
+            </div>
+
+            <!-- Right: Accessibility Controls (Font Resize, Contrast, Theme, Language) -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- Font Resizer -->
+                <div class="btn-group btn-group-sm me-1" role="group" aria-label="Font Size Controls">
+                    <button type="button" class="btn btn-outline-secondary text-white btn-sm py-0 px-2" data-font-size="sm" title="Decrease Font Size">A-</button>
+                    <button type="button" class="btn btn-outline-secondary text-white btn-sm py-0 px-2" data-font-size="md" title="Default Font Size">A</button>
+                    <button type="button" class="btn btn-outline-secondary text-white btn-sm py-0 px-2" data-font-size="lg" title="Increase Font Size">A+</button>
+                </div>
+
+                <!-- High Contrast Toggle -->
+                <button type="button" class="btn btn-link btn-sm text-white text-decoration-none py-0 px-1" id="contrastToggle" title="Toggle High Contrast Mode">
+                    <i class="fa-solid fa-circle-half-stroke me-1"></i>Contrast
+                </button>
+
+                <!-- Dark / Light Theme Toggle -->
+                <button type="button" class="btn btn-link btn-sm text-white text-decoration-none py-0 px-1 theme-toggle-btn" id="themeToggle" title="Toggle Light/Dark Theme">
+                    <i class="fa-solid fa-moon me-1"></i><span class="theme-toggle-label">Theme</span>
+                </button>
+
+                <!-- Language Selector -->
+                <form asp-controller="Home" asp-action="SetLanguage" method="post" class="d-inline ms-1">
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                    <select name="lang" onchange="this.form.submit()" class="form-select form-select-sm d-inline-block w-auto py-0 px-2 bg-dark text-white border-secondary" aria-label="Language selector">
+                        <option value="en" selected="@(lang == "en")">English</option>
+                        <option value="hi" selected="@(lang == "hi")">हिन्दी</option>
+                        <option value="pa" selected="@(lang == "pa")">ਪੰਜਾਬੀ</option>
+                    </select>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <!-- Main Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-nyaya sticky-top shadow-sm">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/nyayasetu-emblem.svg" alt="NyayaSetu Emblem" width="40" height="40" />
-                    <div>
-                        <div class="fw-bold lh-1 text-white">@Loc.Get("AppName", lang)</div>
-                        <small class="text-white-50" style="font-size: 0.72rem;">@Loc.Get("Tagline", lang)</small>
+    <!-- Ministry Masthead (National Emblem + Bilingual Ministry Branding) -->
+    <header class="ministry-masthead py-2 shadow-sm">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <!-- Left: State Emblem of India + Ministry Names -->
+                <div class="d-flex align-items-center gap-3">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none d-flex align-items-center gap-2">
+                        <img src="~/images/emblem-india.svg" alt="State Emblem of India" width="46" height="58" class="d-inline-block" />
+                    </a>
+                    <div class="border-start ps-3 py-1 border-2 border-secondary-subtle">
+                        <div class="ministry-title-hindi">विधि एवं न्याय मंत्रालय</div>
+                        <div class="ministry-title-eng text-uppercase">Ministry of Law and Justice</div>
+                        <div class="small text-muted fw-semibold" style="font-size: 0.72rem;">भारत सरकार | GOVERNMENT OF INDIA</div>
                     </div>
-                </a>
-                <button class="navbar-toggler border-light" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">@Loc.Get("NavHome", lang)</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="About">@Loc.Get("NavAbout", lang)</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Services">@Loc.Get("NavServices", lang)</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="LegalAidInfo">@Loc.Get("NavLegalAid", lang)</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Track">@Loc.Get("NavTrack", lang)</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Complaints" asp-action="Index">@Loc.Get("NavGrievances", lang)</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Assistant" asp-action="Index"><i class="fa-solid fa-robot me-1"></i>AI Info</a></li>
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            var dashCtrl = User.IsInRole(AppRoles.SuperAdmin) ? "Admin"
-                                : User.IsInRole(AppRoles.DepartmentOfficer) ? "Officer"
-                                : User.IsInRole(AppRoles.LegalAidOfficer) ? "LegalAid" : "Citizen";
-                            <li class="nav-item ms-lg-2">
-                                <a class="btn btn-saffron btn-sm fw-semibold" asp-controller="@dashCtrl" asp-action="Dashboard">
-                                    <i class="fa-solid fa-gauge-high me-1"></i>Dashboard
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item ms-lg-2">
-                                <a class="btn btn-saffron btn-sm fw-semibold" asp-controller="Account" asp-action="Login">
-                                    <i class="fa-solid fa-right-to-bracket me-1"></i>@Loc.Get("NavLogin", lang)
-                                </a>
-                            </li>
-                        }
-                    </ul>
+                </div>
+
+                <!-- Center / Right: NyayaSetu Portal Identity & Digital India -->
+                <div class="d-flex align-items-center gap-3 ms-auto">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none d-flex align-items-center gap-2 text-start">
+                        <img src="~/images/nyayasetu-emblem.svg" alt="NyayaSetu Scales of Justice Emblem" width="48" height="48" />
+                        <div>
+                            <div class="portal-brand-title lh-1">न्यायसेतु <span class="fw-normal text-muted" style="font-size: 1.1rem;">| NyayaSetu</span></div>
+                            <div class="portal-brand-tagline">National Smart Law &amp; Justice Management Portal</div>
+                        </div>
+                    </a>
+                    <div class="d-none d-lg-flex align-items-center border-start ps-3 ms-2">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 text-start">
+                            <i class="fa-solid fa-scale-balanced me-1 text-primary"></i>
+                            <strong>Digital Justice Mission</strong>
+                            <div class="small text-muted fw-normal" style="font-size:0.68rem;">Academic Prototype Model</div>
+                        </span>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
+    <!-- Primary Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-nyaya sticky-top">
+        <div class="container">
+            <button class="navbar-toggler border-light text-white" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <i class="fa-solid fa-house"></i>@Loc.Get("NavHome", lang)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">
+                            <i class="fa-solid fa-landmark"></i>@Loc.Get("NavAbout", lang)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Services">
+                            <i class="fa-solid fa-scale-balanced"></i>@Loc.Get("NavServices", lang)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="LegalAidInfo">
+                            <i class="fa-solid fa-hand-holding-heart"></i>@Loc.Get("NavLegalAid", lang)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Track">
+                            <i class="fa-solid fa-magnifying-glass-location"></i>@Loc.Get("NavTrack", lang)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Complaints" asp-action="Index">
+                            <i class="fa-solid fa-bullhorn"></i>@Loc.Get("NavGrievances", lang)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Assistant" asp-action="Index">
+                            <i class="fa-solid fa-robot text-warning"></i>AI Nyaya Sahayak
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Contact">
+                            <i class="fa-solid fa-address-book"></i>Contact
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- User Portal / Dashboard / Login Actions -->
+                <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        var dashCtrl = User.IsInRole(AppRoles.SuperAdmin) ? "Admin"
+                            : User.IsInRole(AppRoles.DepartmentOfficer) ? "Officer"
+                            : User.IsInRole(AppRoles.LegalAidOfficer) ? "LegalAid" : "Citizen";
+                        var roleBadge = User.IsInRole(AppRoles.SuperAdmin) ? "Super Admin"
+                            : User.IsInRole(AppRoles.DepartmentOfficer) ? "Dept. Officer"
+                            : User.IsInRole(AppRoles.LegalAidOfficer) ? "Legal Aid Officer" : "Citizen";
+                        <a class="btn btn-saffron btn-sm" asp-controller="@dashCtrl" asp-action="Dashboard">
+                            <i class="fa-solid fa-gauge-high me-1"></i>@roleBadge Dashboard
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-light btn-sm px-3" asp-controller="Account" asp-action="Register">
+                            <i class="fa-solid fa-user-plus me-1"></i>Register
+                        </a>
+                        <a class="btn btn-saffron btn-sm px-3" asp-controller="Account" asp-action="Login">
+                            <i class="fa-solid fa-right-to-bracket me-1"></i>@Loc.Get("NavLogin", lang)
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- News / Legal Bulletin Marquee Ticker -->
+    <div class="news-ticker-bar py-1">
+        <div class="container d-flex align-items-center gap-3">
+            <span class="ticker-label"><i class="fa-solid fa-bullhorn"></i>UPDATES</span>
+            <div class="text-truncate small flex-grow-1" style="color: var(--nyaya-text);">
+                <span>⚖️ <strong>Pre-Litigation Lok Adalat:</strong> Active across all District Legal Services Authorities &bull; 📞 <strong>Free Tele-Law:</strong> 1800-11-0031 &bull; 📄 <strong>Notary Practice Renewal:</strong> 100% online transparent verification via NyayaSetu Portal.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Body -->
     <main>
         <div class="container mt-3">
             <partial name="_ToastNotifications" />
@@ -91,48 +207,85 @@
         @RenderBody()
     </main>
 
-    <footer class="footer-nyaya mt-5 pt-5 pb-4 text-white">
+    <!-- Official Ministry & Government Portal Footer -->
+    <footer class="footer-nyaya mt-5 pt-5 pb-3">
         <div class="container">
-            <div class="row g-4">
+            <div class="row g-4 pb-4 border-bottom border-secondary border-opacity-25">
+                <!-- Column 1: Ministry Information -->
                 <div class="col-lg-4">
-                    <h5 class="fw-bold text-saffron">NyayaSetu</h5>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="~/images/emblem-india.svg" alt="India Emblem" width="38" height="48" />
+                        <div>
+                            <div class="fw-bold text-warning lh-1" style="font-size: 1.05rem;">विधि एवं न्याय मंत्रालय</div>
+                            <div class="small text-white fw-semibold">Ministry of Law and Justice</div>
+                            <div class="text-white-50" style="font-size: 0.72rem;">Government of India | भारत सरकार</div>
+                        </div>
+                    </div>
                     <p class="small text-white-50">
-                        Smart Ministry of Law and Justice Management System — an academic prototype demonstrating digital legal service delivery, transparent tracking, and free legal aid workflows.
+                        NyayaSetu is a Smart Law and Justice Management Platform designed to enhance legal transparency, digitize citizen applications, automate grievance SLA escalation, and coordinate free legal assistance.
                     </p>
-                    <p class="small text-warning mb-0"><i class="fa-solid fa-circle-info me-1"></i>Not affiliated with or operated by the Government of India.</p>
+                    <div class="p-2 rounded-2 bg-dark bg-opacity-50 border border-secondary border-opacity-25 small text-warning">
+                        <i class="fa-solid fa-graduation-cap me-1"></i>
+                        <strong>Academic Prototype:</strong> Developed for educational &amp; research demonstration purposes.
+                    </div>
                 </div>
+
+                <!-- Column 2: Quick Links -->
                 <div class="col-6 col-lg-2">
-                    <h6 class="fw-semibold">Portal</h6>
-                    <ul class="list-unstyled small">
-                        <li><a class="footer-link" asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a class="footer-link" asp-controller="Home" asp-action="Services">Services</a></li>
-                        <li><a class="footer-link" asp-controller="Home" asp-action="Track">Track Application</a></li>
-                        <li><a class="footer-link" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <h6 class="fw-bold text-warning mb-3 text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.05em;">Citizen Services</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a class="footer-link" asp-controller="Home" asp-action="Services"><i class="fa-solid fa-chevron-right me-1 small"></i>All Services</a></li>
+                        <li><a class="footer-link" asp-controller="Home" asp-action="Track"><i class="fa-solid fa-chevron-right me-1 small"></i>Track Application</a></li>
+                        <li><a class="footer-link" asp-controller="Complaints" asp-action="Create"><i class="fa-solid fa-chevron-right me-1 small"></i>File Grievance</a></li>
+                        <li><a class="footer-link" asp-controller="LegalAid" asp-action="Create"><i class="fa-solid fa-chevron-right me-1 small"></i>Request Legal Aid</a></li>
+                        <li><a class="footer-link" asp-controller="Assistant" asp-action="Index"><i class="fa-solid fa-chevron-right me-1 small"></i>AI Nyaya Sahayak</a></li>
                     </ul>
                 </div>
+
+                <!-- Column 3: Ministry Wings -->
                 <div class="col-6 col-lg-3">
-                    <h6 class="fw-semibold">Verified Official Resources</h6>
-                    <ul class="list-unstyled small">
-                        <li><a class="footer-link" href="https://lawmin.gov.in/" target="_blank" rel="noopener">Ministry of Law &amp; Justice</a></li>
-                        <li><a class="footer-link" href="https://doj.gov.in/" target="_blank" rel="noopener">Department of Justice</a></li>
-                        <li><a class="footer-link" href="https://nalsa.gov.in/" target="_blank" rel="noopener">NALSA (Free Legal Aid)</a></li>
-                        <li><a class="footer-link" href="https://services.ecourts.gov.in/" target="_blank" rel="noopener">eCourts Services</a></li>
+                    <h6 class="fw-bold text-warning mb-3 text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.05em;">Ministry Departments</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a class="footer-link" href="https://legalaffairs.gov.in/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square me-1 small"></i>Dept. of Legal Affairs (DLA)</a></li>
+                        <li><a class="footer-link" href="https://legislative.gov.in/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square me-1 small"></i>Legislative Department</a></li>
+                        <li><a class="footer-link" href="https://doj.gov.in/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square me-1 small"></i>Department of Justice (DOJ)</a></li>
+                        <li><a class="footer-link" href="https://nalsa.gov.in/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square me-1 small"></i>NALSA (Free Legal Aid)</a></li>
+                        <li><a class="footer-link" href="https://services.ecourts.gov.in/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square me-1 small"></i>eCourts Services Portal</a></li>
                     </ul>
                 </div>
+
+                <!-- Column 4: Contact & Emergency Helplines -->
                 <div class="col-lg-3">
-                    <h6 class="fw-semibold">Need Information?</h6>
-                    <p class="small text-white-50">Use our AI Legal Information Assistant for plain-language explanations of Indian legal terms and portal guidance.</p>
-                    <a class="btn btn-outline-light btn-sm" asp-controller="Assistant" asp-action="Index"><i class="fa-solid fa-robot me-1"></i>Open AI Assistant</a>
+                    <h6 class="fw-bold text-warning mb-3 text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.05em;">National Helplines</h6>
+                    <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 small mb-3">
+                        <div class="fw-bold text-white"><i class="fa-solid fa-phone text-warning me-2"></i>Legal Aid Helpline: 15100</div>
+                        <div class="text-white-50 mt-1">24x7 Free Legal Advice for Underprivileged Citizens</div>
+                    </div>
+                    <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 small">
+                        <div class="fw-bold text-white"><i class="fa-solid fa-headset text-info me-2"></i>Tele-Law: 1800-11-0031</div>
+                        <div class="text-white-50 mt-1">Maintained under Department of Justice Mission</div>
+                    </div>
                 </div>
             </div>
-            <hr class="border-secondary my-4" />
-            <div class="d-flex flex-wrap justify-content-between small text-white-50">
-                <span>&copy; @DateTime.UtcNow.Year NyayaSetu Academic Prototype</span>
-                <span>Built with ASP.NET Core 8.0 MVC, EF Core &amp; SQL Server</span>
+
+            <!-- Bottom Copyright & Compliance Strip -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 small text-white-50 gap-2">
+                <div>
+                    &copy; @DateTime.UtcNow.Year <strong>NyayaSetu</strong> — Ministry of Law &amp; Justice Academic Prototype. Built with ASP.NET Core &amp; EF Core.
+                </div>
+                <div class="d-flex gap-3">
+                    <a asp-controller="Home" asp-action="About" class="footer-link">About</a>
+                    <a asp-controller="Home" asp-action="Contact" class="footer-link">Contact</a>
+                    <a href="https://india.gov.in/" target="_blank" rel="noopener" class="footer-link">India.gov.in</a>
+                </div>
             </div>
         </div>
+        
+        <!-- Bottom Tricolor Stripe -->
+        <div class="tricolor-stripe mt-3" role="presentation"></div>
     </footer>
 
+    <!-- Bootstrap Bundle & Site JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

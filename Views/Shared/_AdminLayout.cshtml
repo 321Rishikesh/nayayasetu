@@ -1,46 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-bs-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NyayaSetu Super Admin</title>
+    <title>@ViewData["Title"] - NyayaSetu Super Admin | Ministry of Law and Justice</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body class="dashboard-body">
+    <div class="tricolor-stripe" role="presentation"></div>
+
     <div class="d-flex min-vh-100">
-        <!-- Role Sidebar -->
+        <!-- Admin Sidebar -->
         <aside class="sidebar-nyaya d-flex flex-column p-3 text-white" id="dashboardSidebar">
             <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
-                <img src="~/images/nyayasetu-emblem.svg" alt="NyayaSetu" width="34" height="34" />
+                <img src="~/images/emblem-india.svg" alt="India Emblem" width="30" height="38" />
                 <div>
-                    <div class="fw-bold lh-1">NyayaSetu</div>
-                    <span class="badge bg-danger mt-1">Super Admin</span>
+                    <div class="fw-bold lh-1 text-white">न्यायसेतु | NyayaSetu</div>
+                    <span class="badge bg-danger mt-1" style="font-size:0.7rem;">Super Admin</span>
                 </div>
             </a>
             <hr class="border-light opacity-25 my-2" />
             <ul class="nav nav-pills flex-column mb-auto gap-1">
-                
-<li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="Dashboard"><i class="fa-solid fa-chart-pie me-2"></i>Analytics</a></li>
-<li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="Applications"><i class="fa-solid fa-file-signature me-2"></i>Applications &amp; Assign</a></li>
-<li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="Complaints"><i class="fa-solid fa-fire-flame-curved me-2"></i>Complaints &amp; SLA</a></li>
-<li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="Departments"><i class="fa-solid fa-building-columns me-2"></i>Departments</a></li>
-<li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="Users"><i class="fa-solid fa-users-gear me-2"></i>Users &amp; Officers</a></li>
-<li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="Announcements"><i class="fa-solid fa-newspaper me-2"></i>Announcements</a></li>
-<li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="AuditLogs"><i class="fa-solid fa-shield-halved me-2"></i>Audit Logs</a></li>
-
+                <li class="nav-item"><a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Admin" asp-action="Dashboard"><i class="fa-solid fa-chart-pie me-2"></i>Analytics Overview</a></li>
+                <li class="nav-item"><a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Applications" ? "active" : "")" asp-controller="Admin" asp-action="Applications"><i class="fa-solid fa-file-signature me-2"></i>Applications &amp; Assign</a></li>
+                <li class="nav-item"><a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Complaints" ? "active" : "")" asp-controller="Admin" asp-action="Complaints"><i class="fa-solid fa-fire-flame-curved me-2"></i>Grievance Redressal SLA</a></li>
+                <li class="nav-item"><a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Departments" ? "active" : "")" asp-controller="Admin" asp-action="Departments"><i class="fa-solid fa-building-columns me-2"></i>Ministry Departments</a></li>
+                <li class="nav-item"><a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Users" ? "active" : "")" asp-controller="Admin" asp-action="Users"><i class="fa-solid fa-users-gear me-2"></i>Users &amp; Officers</a></li>
+                <li class="nav-item"><a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "Announcements" ? "active" : "")" asp-controller="Admin" asp-action="Announcements"><i class="fa-solid fa-newspaper me-2"></i>Announcements</a></li>
+                <li class="nav-item"><a class="nav-link text-white @(ViewContext.RouteData.Values["action"]?.ToString() == "AuditLogs" ? "active" : "")" asp-controller="Admin" asp-action="AuditLogs"><i class="fa-solid fa-shield-halved me-2"></i>Security Audit Logs</a></li>
             </ul>
+
             <hr class="border-light opacity-25 my-2" />
             <div class="small text-white-50 mb-2">
-                <i class="fa-solid fa-user-shield me-1"></i>@User.Identity?.Name
+                <i class="fa-solid fa-user-shield me-1 text-warning"></i>@User.Identity?.Name
             </div>
             <div class="d-flex gap-2">
-                <a class="btn btn-outline-light btn-sm flex-fill" asp-controller="Account" asp-action="Profile"><i class="fa-solid fa-user-gear"></i></a>
-                <button type="button" class="btn btn-outline-light btn-sm" id="themeToggle" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+                <a class="btn btn-outline-light btn-sm flex-fill" asp-controller="Account" asp-action="Profile" title="Profile Settings"><i class="fa-solid fa-user-gear"></i></a>
+                <button type="button" class="btn btn-outline-light btn-sm theme-toggle-btn" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
                 <form asp-controller="Account" asp-action="Logout" method="post" class="flex-fill">
-                    <button type="submit" class="btn btn-saffron btn-sm w-100 fw-semibold">Logout</button>
+                    <button type="submit" class="btn btn-saffron btn-sm w-100 fw-bold">Logout</button>
                 </form>
             </div>
         </aside>
@@ -52,14 +57,22 @@
                     <button class="btn btn-outline-secondary btn-sm d-lg-none" type="button" onclick="document.getElementById('dashboardSidebar').classList.toggle('show')">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <h5 class="mb-0 fw-bold">@ViewData["Title"]</h5>
+                    <div>
+                        <h5 class="mb-0 fw-bold" style="color: var(--nyaya-navy);">@ViewData["Title"]</h5>
+                        <small class="text-muted" style="font-size: 0.75rem;">Ministry of Law and Justice &bull; Executive Command Console</small>
+                    </div>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <a asp-controller="Notifications" asp-action="Index" class="btn btn-light btn-sm position-relative" aria-label="Notifications">
+                <div class="d-flex align-items-center gap-2">
+                    <a asp-controller="Notifications" asp-action="Index" class="btn btn-outline-secondary btn-sm position-relative" aria-label="Notifications">
                         <i class="fa-solid fa-bell"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notifBadge">0</span>
                     </a>
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-sm">Public Portal</a>
+                    <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" title="Toggle Light/Dark Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-gov btn-sm">
+                        <i class="fa-solid fa-landmark me-1"></i>Public Portal
+                    </a>
                 </div>
             </header>
 
@@ -68,9 +81,9 @@
                 @RenderBody()
             </main>
 
-            <footer class="px-4 py-2 small text-muted border-top d-flex justify-content-between">
-                <span>NyayaSetu Academic Prototype — Super Admin Workspace</span>
-                <span>Not an official Government of India website</span>
+            <footer class="px-4 py-2 small text-muted border-top d-flex justify-content-between" style="background-color: var(--nyaya-surface); border-color: var(--nyaya-border) !important;">
+                <span>NyayaSetu Academic Prototype &bull; Super Admin Workspace</span>
+                <span>Government of India &bull; Ministry of Law and Justice</span>
             </footer>
         </div>
     </div>

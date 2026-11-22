@@ -1,49 +1,90 @@
 @model LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Secure Portal Login - Ministry of Law & Justice";
 }
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card border-0 shadow-sm rounded-4 p-4">
-                <h3 class="fw-bold text-navy mb-1">Sign in to NyayaSetu</h3>
-                <p class="small text-muted mb-4">Access your role-specific dashboard securely.</p>
+        <div class="col-md-7 col-lg-5">
+            <div class="card stat-card rounded-4 p-4 p-md-5 shadow-sm">
+                <!-- Portal Brand inside Card -->
+                <div class="text-center mb-4">
+                    <img src="~/images/emblem-india.svg" alt="India Emblem" width="46" height="58" class="mb-2" />
+                    <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">भारत सरकार &bull; Government of India</div>
+                    <h3 class="fw-bold mb-1" style="color: var(--nyaya-navy);">NyayaSetu Single Sign-On</h3>
+                    <p class="small text-muted mb-0">Unified Login for Citizens, Department Officers, and Administrators</p>
+                </div>
 
                 <form asp-action="Login" method="post">
                     <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
                     <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                    
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label fw-semibold"></label>
-                        <input asp-for="Email" class="form-control" autocomplete="username" />
+                        <label asp-for="Email" class="form-label fw-semibold small"></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-envelope"></i></span>
+                            <input asp-for="Email" id="loginEmail" class="form-control" autocomplete="username" placeholder="name@domain.com" />
+                        </div>
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
+
                     <div class="mb-3">
-                        <label asp-for="Password" class="form-label fw-semibold"></label>
-                        <input asp-for="Password" class="form-control" autocomplete="current-password" />
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label asp-for="Password" class="form-label fw-semibold small mb-0"></label>
+                            <a asp-action="ForgotPassword" class="small text-primary text-decoration-none">Forgot password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-lock"></i></span>
+                            <input asp-for="Password" id="loginPassword" class="form-control" autocomplete="current-password" placeholder="••••••••" />
+                        </div>
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="form-check">
-                            <input asp-for="RememberMe" class="form-check-input" />
-                            <label asp-for="RememberMe" class="form-check-label small"></label>
-                        </div>
-                        <a asp-action="ForgotPassword" class="small">Forgot password?</a>
+
+                    <div class="form-check mb-3">
+                        <input asp-for="RememberMe" class="form-check-input" />
+                        <label asp-for="RememberMe" class="form-check-label small text-muted"></label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Sign In</button>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
+                        <i class="fa-solid fa-right-to-bracket me-1"></i>Sign In to Portal
+                    </button>
                 </form>
 
-                <hr class="my-4" />
-                <div class="small text-muted">
-                    <strong>Demo Prototype Accounts:</strong>
-                    <ul class="mb-2 mt-1 ps-3">
-                        <li>Citizen: <code>citizen@nyayasetu.local</code> / <code>Citizen@123</code></li>
-                        <li>Dept Officer: <code>officer@nyayasetu.local</code> / <code>Officer@123</code></li>
-                        <li>Legal Aid Officer: <code>legalaid@nyayasetu.local</code> / <code>LegalAid@123</code></li>
-                        <li>Super Admin: <code>admin@nyayasetu.local</code> / <code>Admin@123</code></li>
-                    </ul>
-                    New citizen? <a asp-action="Register" class="fw-semibold">Create an account</a>
+                <!-- Quick-Fill Demo Accounts -->
+                <div class="mt-4 pt-3 border-top" style="border-color: var(--nyaya-border) !important;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small fw-bold text-muted"><i class="fa-solid fa-key text-warning me-1"></i>One-Click Demo Accounts:</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 small">
+                        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 demo-autofill" data-email="citizen@nyayasetu.local" data-pass="Citizen@123">
+                            <i class="fa-solid fa-user me-1"></i>Citizen
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 demo-autofill" data-email="officer@nyayasetu.local" data-pass="Officer@123">
+                            <i class="fa-solid fa-briefcase me-1"></i>DLA Officer
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 demo-autofill" data-email="legalaid@nyayasetu.local" data-pass="LegalAid@123">
+                            <i class="fa-solid fa-scale-balanced me-1"></i>Legal Aid
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 demo-autofill" data-email="admin@nyayasetu.local" data-pass="Admin@123">
+                            <i class="fa-solid fa-shield-halved me-1"></i>Admin
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center small text-muted">
+                    New citizen? <a asp-action="Register" class="fw-bold text-primary text-decoration-none">Create an Account</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+<script>
+    document.querySelectorAll('.demo-autofill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('loginEmail').value = btn.dataset.email;
+            document.getElementById('loginPassword').value = btn.dataset.pass;
+        });
+    });
+</script>
+}

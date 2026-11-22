@@ -1,35 +1,94 @@
 @{
-    ViewData["Title"] = "Legal Aid Information";
+    ViewData["Title"] = "National Free Legal Aid & NALSA Guidelines";
 }
 <div class="container py-5">
+    <div class="mb-4">
+        <span class="badge bg-warning text-dark px-3 py-2 fw-semibold mb-2">
+            <i class="fa-solid fa-scale-balanced me-1"></i>Legal Services Authorities Act, 1987
+        </span>
+        <h2 class="fw-bold" style="color: var(--nyaya-navy);"><i class="fa-solid fa-hand-holding-heart text-warning me-2"></i>Access to Justice: Free Legal Aid &amp; Lok Adalat</h2>
+        <p class="text-muted">Statutory eligibility, entitlements, and direct access to legal representation for Indian citizens.</p>
+    </div>
+
     <div class="row g-4">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm rounded-4 p-4">
-                <h2 class="fw-bold text-navy mb-3">Free Legal Aid Information</h2>
-                <p>Under Section 12 of the <strong>Legal Services Authorities Act, 1987</strong>, eligible citizens in India are entitled to free legal services including representation, legal advice, and mediation through Legal Services Authorities.</p>
-                <h5 class="fw-semibold mt-4">Key Eligibility Categories</h5>
-                <ul>
-                    <li>Women and children</li>
-                    <li>Members of Scheduled Castes or Scheduled Tribes</li>
-                    <li>Persons with disabilities</li>
-                    <li>Industrial workmen and victims of mass disaster or violence</li>
-                    <li>Persons in custody</li>
-                    <li>Citizens whose annual income is below the prescribed state limit</li>
-                </ul>
-                <div class="mt-4">
-                    <a asp-controller="LegalAid" asp-action="Create" class="btn btn-primary">Apply for Legal Aid (Prototype)</a>
+            <div class="card stat-card rounded-4 p-4 p-md-5 shadow-sm">
+                <h4 class="fw-bold mb-3" style="color: var(--nyaya-navy);">Legal Aid Mandate under Section 12</h4>
+                <p style="color: var(--nyaya-text); line-height: 1.8;">
+                    In accordance with <strong>Section 12 of the Legal Services Authorities Act, 1987</strong>, and the constitutional directive under Article 39A of the Constitution of India, the state ensures that opportunities for securing justice are not denied to any citizen by reason of economic or other disabilities.
+                </p>
+
+                <h5 class="fw-bold mt-4 mb-3" style="color: var(--nyaya-navy);">Statutory Eligible Categories</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3" style="background-color: var(--nyaya-surface-subtle); border: 1px solid var(--nyaya-border);">
+                            <div class="fw-bold text-primary mb-1"><i class="fa-solid fa-person-dress me-2"></i>Women &amp; Children</div>
+                            <div class="small text-muted">All women and children regardless of income criteria.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3" style="background-color: var(--nyaya-surface-subtle); border: 1px solid var(--nyaya-border);">
+                            <div class="fw-bold text-primary mb-1"><i class="fa-solid fa-users me-2"></i>SC &amp; ST Communities</div>
+                            <div class="small text-muted">Members of Scheduled Castes and Scheduled Tribes.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3" style="background-color: var(--nyaya-surface-subtle); border: 1px solid var(--nyaya-border);">
+                            <div class="fw-bold text-primary mb-1"><i class="fa-solid fa-wheelchair me-2"></i>Persons with Disabilities</div>
+                            <div class="small text-muted">Differently abled citizens under Rights of Persons with Disabilities Act.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3" style="background-color: var(--nyaya-surface-subtle); border: 1px solid var(--nyaya-border);">
+                            <div class="fw-bold text-primary mb-1"><i class="fa-solid fa-hand-holding-dollar me-2"></i>Low Income Threshold</div>
+                            <div class="small text-muted">Citizens whose annual income is below statutory State threshold limit.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3 pt-3 border-top" style="border-color: var(--nyaya-border) !important;">
+                    <a asp-controller="LegalAid" asp-action="Create" class="btn btn-saffron btn-lg fw-bold">
+                        <i class="fa-solid fa-file-signature me-1"></i>Request Legal Aid via NyayaSetu
+                    </a>
+                    <a href="https://nalsa.gov.in/legal-aid/" target="_blank" rel="noopener" class="btn btn-outline-gov btn-lg">
+                        NALSA National Guidelines <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
+
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4">
-                <h5 class="fw-bold text-navy mb-3">Verified Official Portals</h5>
-                <div class="list-group list-group-flush">
-                    <a href="https://nalsa.gov.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">NALSA Official Website <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
-                    <a href="https://nalsa.gov.in/legal-aid/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">NALSA Legal Aid Guide <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
-                    <a href="https://nalsa.gov.in/lok-adalats/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">NALSA Lok Adalats <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
-                    <a href="https://punjab.nalsa.gov.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">Punjab State Legal Services Authority <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
-                    <a href="https://www.tele-law.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action">Tele-Law Portal (DoJ) <i class="fa-solid fa-arrow-up-right-from-square float-end mt-1"></i></a>
+            <div class="card stat-card rounded-4 p-4 shadow-sm mb-4">
+                <h5 class="fw-bold mb-3" style="color: var(--nyaya-navy);"><i class="fa-solid fa-building-columns text-primary me-2"></i>Verified Portals</h5>
+                <div class="list-group list-group-flush small">
+                    <a href="https://nalsa.gov.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span>NALSA Central Portal</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-muted"></i>
+                    </a>
+                    <a href="https://doj.gov.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span>Department of Justice (DOJ)</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-muted"></i>
+                    </a>
+                    <a href="https://www.tele-law.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span>Tele-Law Citizen Assistance</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-muted"></i>
+                    </a>
+                    <a href="https://services.ecourts.gov.in/" target="_blank" rel="noopener" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span>eCourts Services &amp; CNR</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-muted"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card stat-card rounded-4 p-4 shadow-sm">
+                <h5 class="fw-bold mb-3" style="color: var(--nyaya-navy);"><i class="fa-solid fa-phone-volume text-warning me-2"></i>Toll-Free Helplines</h5>
+                <div class="p-3 rounded-3 mb-2" style="background-color: var(--nyaya-surface-subtle); border: 1px solid var(--nyaya-border);">
+                    <div class="fw-bold text-primary">15100</div>
+                    <small class="text-muted">NALSA National Legal Aid Helpline (24x7)</small>
+                </div>
+                <div class="p-3 rounded-3" style="background-color: var(--nyaya-surface-subtle); border: 1px solid var(--nyaya-border);">
+                    <div class="fw-bold text-success">1800-11-0031</div>
+                    <small class="text-muted">Tele-Law Advice via Common Service Centres (CSC)</small>
                 </div>
             </div>
         </div>

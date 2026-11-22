@@ -1,51 +1,96 @@
 @model RegisterViewModel
 @{
-    ViewData["Title"] = "Citizen Registration";
+    ViewData["Title"] = "Citizen Registration - Ministry of Law & Justice";
 }
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-6">
-            <div class="card border-0 shadow-sm rounded-4 p-4">
-                <h3 class="fw-bold text-navy mb-1">Citizen Registration</h3>
-                <p class="small text-muted mb-4">Create your NyayaSetu account to apply for services and track progress.</p>
+        <div class="col-md-8 col-lg-7">
+            <div class="card stat-card rounded-4 p-4 p-md-5 shadow-sm">
+                <div class="text-center mb-4">
+                    <img src="~/images/emblem-india.svg" alt="India Emblem" width="42" height="52" class="mb-2" />
+                    <div class="small text-muted fw-bold text-uppercase" style="letter-spacing: 0.05em;">भारत सरकार &bull; Government of India</div>
+                    <h3 class="fw-bold mb-1" style="color: var(--nyaya-navy);">Citizen Portal Registration</h3>
+                    <p class="small text-muted mb-0">Create your citizen profile to submit legal service applications and grievances.</p>
+                </div>
+
                 <form asp-action="Register" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                    
                     <div class="row g-3">
                         <div class="col-12">
-                            <label asp-for="FullName" class="form-label fw-semibold"></label>
-                            <input asp-for="FullName" class="form-control" />
+                            <label asp-for="FullName" class="form-label fw-semibold small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-user"></i></span>
+                                <input asp-for="FullName" class="form-control" placeholder="Enter Full Legal Name" />
+                            </div>
                             <span asp-validation-for="FullName" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="Email" class="form-label fw-semibold"></label>
-                            <input asp-for="Email" class="form-control" />
+                            <label asp-for="Email" class="form-label fw-semibold small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-envelope"></i></span>
+                                <input asp-for="Email" class="form-control" placeholder="name@domain.com" />
+                            </div>
                             <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="PhoneNumber" class="form-label fw-semibold"></label>
-                            <input asp-for="PhoneNumber" class="form-control" />
+                            <label asp-for="PhoneNumber" class="form-label fw-semibold small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-phone"></i></span>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="+91 98765 43210" />
+                            </div>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="City" class="form-label fw-semibold"></label>
-                            <input asp-for="City" class="form-control" />
+                            <label asp-for="City" class="form-label fw-semibold small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-city"></i></span>
+                                <input asp-for="City" class="form-control" placeholder="City or District" />
+                            </div>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="State" class="form-label fw-semibold"></label>
-                            <input asp-for="State" class="form-control" />
+                            <label asp-for="State" class="form-label fw-semibold small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-map-location-dot"></i></span>
+                                <input asp-for="State" class="form-control" placeholder="State / UT" />
+                            </div>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="Password" class="form-label fw-semibold"></label>
-                            <input asp-for="Password" class="form-control" />
+                            <label asp-for="Password" class="form-label fw-semibold small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-lock"></i></span>
+                                <input asp-for="Password" class="form-control" placeholder="Min 8 chars, uppercase, digit, symbol" />
+                            </div>
                             <span asp-validation-for="Password" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="ConfirmPassword" class="form-label fw-semibold"></label>
-                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <label asp-for="ConfirmPassword" class="form-label fw-semibold small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-primary"><i class="fa-solid fa-lock-open"></i></span>
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                            </div>
                             <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2 mt-4 fw-semibold">Register</button>
+
+                    <div class="p-3 rounded-3 mt-3 small" style="background-color: var(--nyaya-surface-subtle); border: 1px solid var(--nyaya-border);">
+                        <i class="fa-solid fa-shield-halved text-success me-1"></i>
+                        <strong>Privacy Safeguard:</strong> Your data is stored securely in compliance with the Digital Personal Data Protection Act, 2023.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 mt-4 fw-bold shadow-sm">
+                        <i class="fa-solid fa-user-plus me-1"></i>Complete Citizen Registration
+                    </button>
                 </form>
+
+                <div class="mt-4 text-center small text-muted">
+                    Already registered? <a asp-action="Login" class="fw-bold text-primary text-decoration-none">Sign In Here</a>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 150" width="120" height="150" role="img" aria-label="State Emblem of India">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="50%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#92400E" />
+    </linearGradient>
+    <linearGradient id="chakraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E40AF" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Crown / Top Crest -->
+  <path d="M 60,6 L 64,14 L 56,14 Z" fill="url(#goldGrad)" />
+  
+  <!-- Lions Heads -->
+  <!-- Center Lion -->
+  <ellipse cx="60" cy="28" rx="14" ry="16" fill="url(#goldGrad)" />
+  <circle cx="55" cy="24" r="2.2" fill="#1E293B" />
+  <circle cx="65" cy="24" r="2.2" fill="#1E293B" />
+  <path d="M 57,30 Q 60,33 63,30" stroke="#1E293B" stroke-width="1.8" fill="none" stroke-linecap="round" />
+  <!-- Mane details -->
+  <path d="M 46,24 C 44,18 52,14 60,14 C 68,14 76,18 74,24 C 76,32 72,40 60,42 C 48,40 44,32 46,24 Z" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" />
+  
+  <!-- Left Lion -->
+  <ellipse cx="38" cy="30" rx="11" ry="14" fill="url(#goldGrad)" />
+  <circle cx="34" cy="27" r="1.8" fill="#1E293B" />
+  <path d="M 33,33 Q 36,36 39,33" stroke="#1E293B" stroke-width="1.5" fill="none" stroke-linecap="round" />
+  
+  <!-- Right Lion -->
+  <ellipse cx="82" cy="30" rx="11" ry="14" fill="url(#goldGrad)" />
+  <circle cx="86" cy="27" r="1.8" fill="#1E293B" />
+  <path d="M 81,33 Q 84,36 87,33" stroke="#1E293B" stroke-width="1.5" fill="none" stroke-linecap="round" />
+  
+  <!-- Lions Bodies & Paws -->
+  <path d="M 32,44 C 32,56 42,66 48,72 L 72,72 C 78,66 88,56 88,44 C 82,48 74,52 60,52 C 46,52 38,48 32,44 Z" fill="url(#goldGrad)" />
+  <!-- Paws on Abacus -->
+  <rect x="42" y="72" width="10" height="8" rx="3" fill="url(#goldGrad)" />
+  <rect x="68" y="72" width="10" height="8" rx="3" fill="url(#goldGrad)" />
+  <rect x="28" y="68" width="9" height="7" rx="2.5" fill="url(#goldGrad)" />
+  <rect x="83" y="68" width="9" height="7" rx="2.5" fill="url(#goldGrad)" />
+  
+  <!-- Abacus Platform -->
+  <rect x="18" y="80" width="84" height="24" rx="3" fill="url(#goldGrad)" />
+  
+  <!-- Ashoka Chakra (Dharma Chakra) in Center of Abacus -->
+  <circle cx="60" cy="92" r="9" fill="#FFFFFF" stroke="url(#chakraGrad)" stroke-width="2" />
+  <circle cx="60" cy="92" r="2" fill="url(#chakraGrad)" />
+  <!-- 24 Spokes representation -->
+  <g stroke="url(#chakraGrad)" stroke-width="1" opacity="0.85">
+    <line x1="60" y1="83" x2="60" y2="101" />
+    <line x1="51" y1="92" x2="69" y2="92" />
+    <line x1="53.6" y1="85.6" x2="66.4" y2="98.4" />
+    <line x1="53.6" y1="98.4" x2="66.4" y2="85.6" />
+  </g>
+  
+  <!-- Bull on Right -->
+  <path d="M 78,94 C 82,90 86,91 90,93 C 94,95 93,98 90,98 L 78,98 Z" fill="#92400E" opacity="0.6" />
+  <!-- Horse on Left -->
+  <path d="M 42,94 C 38,90 34,91 30,93 C 26,95 27,98 30,98 L 42,98 Z" fill="#92400E" opacity="0.6" />
+  
+  <!-- Inverted Lotus Base -->
+  <path d="M 22,106 C 26,116 38,122 60,122 C 82,122 94,116 98,106 Z" fill="url(#goldGrad)" />
+  <path d="M 34,106 C 42,118 52,120 60,120 C 68,120 78,118 86,106 Z" fill="#B45309" opacity="0.4" />
+  
+  <!-- National Motto: Satyameva Jayate (Devanagari) -->
+  <text x="60" y="140" font-family="'Poppins', 'Mukta', 'Noto Sans Devanagari', 'Arial', sans-serif" font-size="11.5" font-weight="700" text-anchor="middle" fill="url(#goldGrad)" letter-spacing="1.2">सत्यमेव जयते</text>
+</svg>
